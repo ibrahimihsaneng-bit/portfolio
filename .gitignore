@@ -1,0 +1,50 @@
+# Huge Blender 3D Movie Productions & Renders (>7GB total)
+CHRONO_LOTUS/
+VARNEX_E9_Automotive_CGI/
+KYNORA_X1_Cinematic_Product_Film/
+Realistic_Sunlit_Living_Room/
+PORTFOLIO_KEYART_SUITE/
+sanctuary_deep_lake_frames/
+sanctuary_review_frames/
+video_frames/
+temp_analysis/
+
+# Large Media & Video Binaries (>100MB breaks GitHub)
+*.mp4
+*.wav
+*.blend
+*.blend1
+*.obj
+*.stl
+/*4K.png
+/*PHOTOREALISTIC*.png
+/*CONCEPT_*.jpg
+/*_act*.jpg
+
+# Python Virtual Environments & Cache
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Temporary scratch & system logs
+scratch/
+.system_generated/
+*.log
+
+# Temporary root test frames
+/*_frame*.jpg*
+/*sample_*.jpg
+/final_*.jpg
+/fleet_*.jpg
+/grand_*.jpg
+/lake_*.jpg
+/mandala_*.jpg
+/masterpiece_*.jpg
+/test_*.jpg*
+/test_*.png
+/v2_frame*.jpg*
+/verify_*.jpg
+/deep_lake_frame*.jpg
+/camera_sample_*.jpg
+/,

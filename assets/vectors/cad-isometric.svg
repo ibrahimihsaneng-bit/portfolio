@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+    <!-- Isometric Cube Faces -->
+    <!-- Top Face -->
+    <path d="M32 10 L50 20 L32 30 L14 20 Z" stroke="#F59E46" stroke-width="2.5" stroke-linejoin="round" fill="#F59E46" fill-opacity="0.1" />
+    <!-- Right Face -->
+    <path d="M50 20 L50 42 L32 52 L32 30 Z" stroke="#F59E46" stroke-width="2.5" stroke-linejoin="round" fill="#F59E46" fill-opacity="0.2" />
+    <!-- Left Face -->
+    <path d="M14 20 L32 30 L32 52 L14 42 Z" stroke="#F59E46" stroke-width="2.5" stroke-linejoin="round" fill="#F59E46" fill-opacity="0.05" />
+    
+    <!-- Technical CAD Inner Construction Axes in Cyan -->
+    <line x1="32" y1="30" x2="32" y2="48" stroke="#45BEC9" stroke-width="1.8" stroke-dasharray="3 2" />
+    <line x1="32" y1="30" x2="46" y2="22" stroke="#45BEC9" stroke-width="1.8" stroke-dasharray="3 2" />
+    <line x1="32" y1="30" x2="18" y2="22" stroke="#45BEC9" stroke-width="1.8" stroke-dasharray="3 2" />
+    
+    <!-- Dimension arrows at base -->
+    <path d="M10 46 L28 56 M10 46 L14 45 M10 46 L13 49" stroke="#45BEC9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
