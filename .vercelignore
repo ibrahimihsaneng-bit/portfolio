@@ -2,3 +2,7 @@ server.js
 scripts/
 scratch/
 automation/
+*.py
+requirements.txt
+Pipfile
+pyproject.toml
