@@ -45,6 +45,13 @@
         }
     </script>
     <style>
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+            margin: 0;
+            padding: 0;
+        }
         body {
             background-color: #000000;
             color: #E2E8F0;
@@ -246,6 +253,8 @@
             position: relative;
             user-select: none;
             touch-action: pan-y;
+            overflow: hidden !important;
+            max-width: 100vw !important;
         }
         /* Colour-Reactive Focus Carousel (Exat & Neko Health Inspired) */
         .orbit-track {
@@ -281,8 +290,8 @@
         }
         @media (max-width: 640px) {
             .orbit-card {
-                width: 320px;
-                margin-left: -160px;
+                width: min(320px, calc(100vw - 32px));
+                margin-left: calc(min(320px, calc(100vw - 32px)) / -2);
                 margin-top: -250px;
                 border-radius: 26px;
             }
@@ -697,17 +706,17 @@
 
     <!-- Top Navigation Bar -->
     <header class="sticky top-0 z-50 bg-[#080A0D]/90 backdrop-blur-md border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#about" class="flex items-center space-x-3.5 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F59E46] to-[#E5734C] text-[#080A0D] font-extrabold flex items-center justify-center text-sm shadow-md shadow-[#F59E46]/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+            <a href="#about" class="flex items-center space-x-2 sm:space-x-3.5 group min-w-0">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-br from-[#F59E46] to-[#E5734C] text-[#080A0D] font-extrabold flex items-center justify-center text-xs sm:text-sm shadow-md shadow-[#F59E46]/20">
                     Ih
                 </div>
-                <div>
-                    <div class="font-bold text-[#F5F7FB] tracking-tight flex items-center space-x-2 text-sm sm:text-base">
-                        <span>Ibrahim Ihsan</span>
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+                <div class="min-w-0">
+                    <div class="font-bold text-[#F5F7FB] tracking-tight flex items-center space-x-1.5 sm:space-x-2 text-xs sm:text-base">
+                        <span class="truncate">Ibrahim Ihsan</span>
+                        <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 shrink-0 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
                     </div>
-                    <div class="text-[11px] text-[#A4AAB5] font-mono">TKM College of Engineering</div>
+                    <div class="text-[10px] sm:text-[11px] text-[#A4AAB5] font-mono truncate hidden xs:block">TKM College of Engineering</div>
                 </div>
             </a>
 
@@ -722,29 +731,26 @@
                 <a href="#contact" class="nav-item" data-nav="contact">Contact</a>
             </nav>
 
-            <div class="flex items-center space-x-3">
-                <!-- Eye Theme Switcher Button (Inspired by Lusion) -->
-                
+            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
                 <!-- Physics-AI & Neural Studio Trigger (Modal Launcher) -->
-                <button type="button" onclick="openPhysicsAiStudio('pinn')" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/15 via-emerald-500/15 to-amber-500/15 hover:from-cyan-500/25 hover:to-amber-500/25 border border-cyan-400/40 text-cyan-300 hover:text-white transition-all text-xs font-mono font-bold shadow-sm shadow-cyan-500/15 cursor-pointer active:scale-95" title="Explore Physics-AI & Autonomous Engineering Studio">
+                <button type="button" onclick="openPhysicsAiStudio('pinn')" class="inline-flex items-center space-x-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-cyan-500/15 via-emerald-500/15 to-amber-500/15 hover:from-cyan-500/25 hover:to-amber-500/25 border border-cyan-400/40 text-cyan-300 hover:text-white transition-all text-[11px] sm:text-xs font-mono font-bold shadow-sm shadow-cyan-500/15 cursor-pointer active:scale-95" title="Explore Physics-AI & Autonomous Engineering Studio">
                     <span>⚡ AI Studio</span>
-                    <span class="px-1.5 py-0.2 rounded bg-cyan-400 text-black font-extrabold text-[9px] uppercase tracking-wider">NEW</span>
+                    <span class="hidden xs:inline px-1 py-0.2 rounded bg-cyan-400 text-black font-extrabold text-[8px] uppercase tracking-wider">NEW</span>
                 </button>
-                <button type="button" id="nav-eye-theme-btn" onclick="toggleHeroTheme()" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-mono text-[#F5F7FB] transition-all cursor-pointer shadow-sm active:scale-95" title="Toggle Hero View (Obsidian Dark / Luminous White)">
+                <button type="button" id="nav-eye-theme-btn" onclick="toggleHeroTheme()" class="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-mono text-[#F5F7FB] transition-all cursor-pointer shadow-sm active:scale-95" title="Toggle Hero View (Obsidian Dark / Luminous White)">
                     <span class="text-sm">👁️</span>
                     <span id="nav-theme-label" class="hidden sm:inline">WHITE VIEW</span>
                 </button>
                 <a href="https://wa.me/919446631380" target="_blank" class="hidden sm:inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30 hover:bg-[#10B981]/25 text-xs font-semibold transition-all">
                     <span>💬 WhatsApp</span>
                 </a>
-                <a href="resume.html" target="_blank" class="px-4 py-1.5 rounded-full bg-[#F5F7FB] text-[#080A0D] hover:bg-neutral-200 text-xs font-bold transition-all shadow-sm flex items-center space-x-1">
-                    <span>Resume</span>
-                    <span class="hidden sm:inline">(PDF)</span>
+                <a href="resume.html" target="_blank" class="hidden sm:inline-flex px-4 py-1.5 rounded-full bg-[#F5F7FB] text-[#080A0D] hover:bg-neutral-200 text-xs font-bold transition-all shadow-sm items-center space-x-1">
+                    <span>Resume (PDF)</span>
                     <span>↗</span>
                 </a>
                 <!-- Mobile Menu Hamburger Button -->
                 <button type="button" id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-[#F5F7FB] hover:text-[#F59E46] transition-colors" aria-label="Toggle Navigation Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -780,7 +786,7 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-12 space-y-28">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-20 sm:space-y-28">
 
         <!-- Hero Section (Lusion-Inspired Cinematic Video & Engineering Architecture) -->
         <section id="about" class="relative pt-6 sm:pt-10 pb-6 space-y-12 rounded-[36px] overflow-hidden p-6 sm:p-10 border border-white/10 shadow-2xl transition-all duration-500 bg-[#06080C]">
@@ -816,9 +822,9 @@
                     
                     <!-- Eyebrow Pill + Eye Theme Switcher + Live Video Switcher Badge -->
                     <div class="flex flex-wrap items-center gap-2.5">
-                        <div class="hero-glass-pill inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#16191E]/60 backdrop-blur-md border border-white/15 text-xs font-mono text-[#F5F7FB] shadow-sm">
-                            <span class="w-2 h-2 rounded-full bg-[#F59E46] animate-pulse"></span>
-                            <span>Mechanical Engineering • Simulation • CAD • MEP</span>
+                        <div class="hero-glass-pill inline-flex items-center space-x-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-[#16191E]/60 backdrop-blur-md border border-white/15 text-[11px] sm:text-xs font-mono text-[#F5F7FB] shadow-sm max-w-full">
+                            <span class="w-2 h-2 shrink-0 rounded-full bg-[#F59E46] animate-pulse"></span>
+                            <span class="truncate">CAE Simulation • CAD • MEP</span>
                         </div>
 
                         <!-- Eye Theme Switcher Button (Direct Malayalam User Request: ഐസ് ക്ലിക്ക് ചെയ്താൽ വെളുക്കും) -->
@@ -2141,17 +2147,17 @@
             </div>
 
             <!-- Segmented Lab Module Switcher Tabs -->
-            <div class="relative z-10 flex flex-wrap gap-2 p-1.5 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-md max-w-4xl mx-auto">
-                <button type="button" onclick="switchCAETab('cfd')" id="cae-tab-btn-cfd" class="cae-tab-btn flex-1 min-w-[170px] py-3 px-4 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#53BBC8]/20 to-[#53BBC8]/10 text-[#53BBC8] border border-[#53BBC8]/30 shadow-sm flex items-center justify-center space-x-2">
+            <div class="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-2 p-1.5 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-md max-w-4xl mx-auto">
+                <button type="button" onclick="switchCAETab('cfd')" id="cae-tab-btn-cfd" class="cae-tab-btn w-full py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#53BBC8]/20 to-[#53BBC8]/10 text-[#53BBC8] border border-[#53BBC8]/30 shadow-sm flex items-center justify-center space-x-1.5 sm:space-x-2">
                     <span>⚡ CFD WIND TUNNEL</span>
                 </button>
-                <button type="button" onclick="switchCAETab('fea')" id="cae-tab-btn-fea" class="cae-tab-btn flex-1 min-w-[170px] py-3 px-4 rounded-xl text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-2">
+                <button type="button" onclick="switchCAETab('fea')" id="cae-tab-btn-fea" class="cae-tab-btn w-full py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[11px] sm:text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-1.5 sm:space-x-2">
                     <span>🔬 FEA STRESS &amp; YIELD</span>
                 </button>
-                <button type="button" onclick="switchCAETab('mep')" id="cae-tab-btn-mep" class="cae-tab-btn flex-1 min-w-[170px] py-3 px-4 rounded-xl text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-2">
+                <button type="button" onclick="switchCAETab('mep')" id="cae-tab-btn-mep" class="cae-tab-btn w-full py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[11px] sm:text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-1.5 sm:space-x-2">
                     <span>📐 MEPLANIQ ROUTING</span>
                 </button>
-                <button type="button" onclick="switchCAETab('twin')" id="cae-tab-btn-twin" class="cae-tab-btn flex-1 min-w-[170px] py-3 px-4 rounded-xl text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-2">
+                <button type="button" onclick="switchCAETab('twin')" id="cae-tab-btn-twin" class="cae-tab-btn w-full py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[11px] sm:text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-1.5 sm:space-x-2">
                     <span>🛸 3D CAD DIGITAL TWIN</span>
                 </button>
             </div>
@@ -4814,10 +4820,10 @@
                 const btn = document.getElementById('cae-tab-btn-' + t);
                 const pane = document.getElementById('cae-pane-' + t);
                 if (t === tab) {
-                    btn.className = 'cae-tab-btn flex-1 min-w-[170px] py-3 px-4 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#53BBC8]/20 to-[#53BBC8]/10 text-[#53BBC8] border border-[#53BBC8]/30 shadow-sm flex items-center justify-center space-x-2';
+                    btn.className = 'cae-tab-btn w-full py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 bg-gradient-to-r from-[#53BBC8]/20 to-[#53BBC8]/10 text-[#53BBC8] border border-[#53BBC8]/30 shadow-sm flex items-center justify-center space-x-1.5 sm:space-x-2';
                     pane.classList.remove('hidden');
                 } else {
-                    btn.className = 'cae-tab-btn flex-1 min-w-[170px] py-3 px-4 rounded-xl text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-2';
+                    btn.className = 'cae-tab-btn w-full py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[11px] sm:text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 text-neutral-400 hover:text-white hover:bg-white/5 flex items-center justify-center space-x-1.5 sm:space-x-2';
                     pane.classList.add('hidden');
                 }
             });
