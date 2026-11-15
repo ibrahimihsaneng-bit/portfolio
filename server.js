@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = 8080;
 const PUBLIC_DIR = path.resolve(__dirname);
 
 const MIME_TYPES = {
@@ -101,7 +101,7 @@ const server = http.createServer((req, res) => {
     });
 });
 
-// Dual-stack listen on port 3000 (binds to both IPv6 :: and IPv4 0.0.0.0 simultaneously)
+// Dual-stack listen on port 8080 (binds to both IPv6 :: and IPv4 0.0.0.0 simultaneously)
 server.listen(PORT, () => {
     console.log(`Dual-Stack Streaming Server active at http://localhost:${PORT}/index.html`);
 });

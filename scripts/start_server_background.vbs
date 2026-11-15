@@ -4,7 +4,7 @@ oShell.CurrentDirectory = strDir
 
 On Error Resume Next
 Set oHttp = CreateObject("MSXML2.ServerXMLHTTP.6.0")
-oHttp.open "GET", "http://localhost:3000/index.html", False
+oHttp.open "GET", "http://localhost:8080/index.html", False
 oHttp.setTimeouts 1000, 1000, 1000, 1000
 oHttp.send
 
