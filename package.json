@@ -4,8 +4,7 @@
   "description": "Professional portfolio and ATS-optimized resume suite for **Ibrahim Ihsan** (Mechanical Engineering, TKM College of Engineering).",
   "main": "extracted_main_script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "echo 'Static deployment complete'"
   },
   "repository": {
     "type": "git",
