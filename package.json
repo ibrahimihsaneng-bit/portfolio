@@ -1,0 +1,25 @@
+{
+  "name": "bulid-that-know",
+  "version": "1.0.0",
+  "description": "Professional portfolio and ATS-optimized resume suite for **Ibrahim Ihsan** (Mechanical Engineering, TKM College of Engineering).",
+  "main": "extracted_main_script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibrahimihsaneng-bit/portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ibrahimihsaneng-bit/portfolio/issues"
+  },
+  "homepage": "https://github.com/ibrahimihsaneng-bit/portfolio#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

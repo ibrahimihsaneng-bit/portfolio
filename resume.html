@@ -3,199 +3,783 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume - Ibrahim Ihsan | Mechanical Engineer</title>
+    <title>Resume — Ibrahim Ihsan | Mechanical Engineer (CAE, CFD & CAD Automation)</title>
+    <meta name="description" content="Official mechanical engineering resume of Ibrahim Ihsan (TKM College of Engineering). Verified projects in ANSYS Fluent CFD, thermal FEA, SolidWorks 3D CAD, and Python MEP automation. Available in PDF and accessible web format.">
+    <link rel="canonical" href="https://ibrahimihsan.vercel.app/resume.html">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        @page {
-            size: A4;
-            margin: 12mm 14mm;
+        :root {
+            --bg-page: #080A0F;
+            --bg-sheet: #FFFFFF;
+            --text-sheet: #111827;
+            --text-muted: #4B5563;
+            --accent-copper: #C2410C;
+            --accent-cyan: #0E7490;
+            --border-subtle: #E5E7EB;
         }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-            color: #1a1a1a;
-            background: #ffffff;
-            line-height: 1.35;
-            font-size: 10pt;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: #E2E8F0;
+            line-height: 1.45;
+            min-height: 100vh;
+            padding-bottom: 40px;
         }
-        .container {
-            max-width: 800px;
+
+        /* Top Action Bar (Web Only) */
+        .portal-bar {
+            background: #0D1117;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(12px);
+        }
+
+        .portal-bar-inner {
+            max-width: 900px;
             margin: 0 auto;
-            padding: 10px 20px;
+            padding: 12px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
-        header {
+
+        .back-link {
+            color: #F59E46;
+            text-decoration: none;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s ease;
+        }
+        .back-link:hover {
+            color: #FFB366;
+            text-decoration: underline;
+        }
+
+        .view-switcher {
+            display: flex;
+            background: #161B22;
+            padding: 3px;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            gap: 2px;
+        }
+
+        .view-btn {
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .view-btn:hover {
+            color: #FFFFFF;
+        }
+        .view-btn.active {
+            background: #F59E46;
+            color: #080A0D;
+            box-shadow: 0 2px 8px rgba(245, 158, 70, 0.3);
+        }
+
+        .download-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn {
+            background: #10B981;
+            color: #062316;
+            text-decoration: none;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            padding: 7px 14px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .download-btn:hover {
+            background: #34D399;
+            transform: translateY(-1px);
+        }
+
+        .print-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #F1F5F9;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            padding: 7px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .print-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Document Stage */
+        .stage-wrapper {
+            max-width: 900px;
+            margin: 24px auto 0;
+            padding: 0 16px;
+        }
+
+        .resume-sheet {
+            background: var(--bg-sheet);
+            color: var(--text-sheet);
+            border-radius: 6px;
+            padding: 32px 36px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            font-size: 9.3pt;
+            line-height: 1.32;
+        }
+
+        /* Sheet Typography */
+        header.sheet-header {
             text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
+            border-bottom: 2px solid #1F2937;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
         }
-        h1 {
+        h1.applicant-name {
             font-size: 20pt;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
             font-weight: 800;
-            margin-bottom: 3px;
+            color: #0F172A;
+            margin-bottom: 2px;
+            line-height: 1.1;
         }
-        .sub-header {
-            font-size: 10.5pt;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .contact-info {
-            font-size: 9pt;
-            color: #444;
-        }
-        .contact-info a {
-            color: #111;
-            text-decoration: none;
-        }
-        section {
-            margin-bottom: 10px;
-        }
-        h2 {
-            font-size: 11pt;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 2px;
-            margin-bottom: 6px;
+        .applicant-headline {
+            font-size: 9.8pt;
             font-weight: 700;
+            color: var(--accent-copper);
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
         }
-        .item-header {
+        .sheet-contact {
+            font-size: 8.5pt;
+            color: #374151;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .sheet-contact a {
+            color: #111827;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .sheet-contact a:hover {
+            text-decoration: underline;
+        }
+
+        section.resume-section {
+            margin-bottom: 8px;
+        }
+        h2.section-heading {
+            font-size: 10.3pt;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 1.5px;
+            margin-bottom: 4px;
+            font-weight: 800;
+            color: #0F172A;
+        }
+
+        .item-row {
             display: flex;
             justify-content: space-between;
             font-weight: 700;
-            font-size: 10pt;
+            font-size: 9.2pt;
+            color: #111827;
         }
-        .item-sub {
+        .item-sub-row {
             display: flex;
             justify-content: space-between;
             font-style: italic;
-            font-size: 9pt;
-            color: #333;
-            margin-bottom: 3px;
-        }
-        ul {
-            padding-left: 16px;
-            margin-bottom: 6px;
-        }
-        li {
+            font-size: 8.5pt;
+            color: #4B5563;
             margin-bottom: 2px;
-            font-size: 9.2pt;
+        }
+        .resume-bullets {
+            padding-left: 14px;
+            margin-bottom: 4px;
+        }
+        .resume-bullets li {
+            margin-bottom: 2px;
+            font-size: 8.7pt;
+            color: #1F2937;
             text-align: justify;
         }
-        .skills-grid p {
-            font-size: 9.2pt;
-            margin-bottom: 3px;
-        }
-        .skills-grid strong {
+        .resume-bullets li strong {
             font-weight: 700;
+            color: #0F172A;
         }
+
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8.6pt;
+        }
+        .skills-table td {
+            padding: 1.5px 0;
+            vertical-align: top;
+        }
+        .skills-table td.skill-label {
+            width: 130px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        /* Targeted Views Visibility */
+        .resume-view {
+            display: none;
+        }
+        .resume-view.active-view {
+            display: block;
+        }
+
+        /* Strict Print Rules: Exactly 1 Page */
         @media print {
-            body { -webkit-print-color-adjust: exact; }
-            .no-print { display: none; }
+            @page {
+                size: A4 portrait;
+                margin: 8mm 11mm;
+            }
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .stage-wrapper {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .resume-sheet {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+            }
+            a {
+                text-decoration: none !important;
+                color: inherit !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="no-print" style="background: #090A0F; color: #fff; text-align: center; padding: 10px; font-family: monospace;">
-        <span>Press <b>Ctrl + P</b> (or Cmd + P) and select <b>"Save as PDF"</b> to export your official ATS resume.</span>
-    </div>
 
-    <div class="container">
-        <header>
-            <h1>IBRAHIM IHSAN</h1>
-            <div class="sub-header">Mechanical Engineering Undergraduate | CAE/CFD Simulation &amp; Engineering Automation</div>
-            <div class="contact-info">
-                📍 Kollam, Kerala, India &nbsp;|&nbsp; 📞 +91 9446631380 &nbsp;|&nbsp; ✉️ ibrahimihsan.work@gmail.com &nbsp;|&nbsp; 💬 <a href="https://wa.me/919446631380" target="_blank">Direct WhatsApp</a>
-            </div>
-        </header>
+    <!-- Web Header & Action Bar -->
+    <aside class="portal-bar no-print" aria-label="Resume options and downloads">
+        <div class="portal-bar-inner">
+            <a href="index.html" class="back-link">
+                <span>←</span>
+                <span>Back to Engineering Portfolio</span>
+            </a>
 
-        <section>
-            <h2>Education</h2>
-            <div class="item-header">
-                <span>TKM College of Engineering, Kollam</span>
-                <span>2024 – 2028</span>
+            <!-- View Switcher Tabs -->
+            <div class="view-switcher" role="tablist" aria-label="Resume specialization versions">
+                <button type="button" role="tab" id="tab-master" class="view-btn active" aria-selected="true" aria-controls="view-master" onclick="switchResumeView('master')">
+                    Comprehensive
+                </button>
+                <button type="button" role="tab" id="tab-cae" class="view-btn" aria-selected="false" aria-controls="view-cae" onclick="switchResumeView('cae')">
+                    CAE &amp; CFD
+                </button>
+                <button type="button" role="tab" id="tab-cad" class="view-btn" aria-selected="false" aria-controls="view-cad" onclick="switchResumeView('cad')">
+                    CAD &amp; Automation
+                </button>
             </div>
-            <div class="item-sub">
-                <span>Bachelor of Technology (B.Tech) in Mechanical Engineering (Current: 3rd Semester)</span>
-                <span>Kerala, India</span>
-            </div>
-            <ul>
-                <li>Relevant Coursework: Mechanics of Solids, Fluid Mechanics, Thermodynamics, Kinematics, Materials Science.</li>
-            </ul>
-        </section>
 
-        <section>
-            <h2>Technical Competencies</h2>
-            <div class="skills-grid">
-                <p><strong>CAE & Simulation:</strong> Finite Element Analysis (FEA), Computational Fluid Dynamics (CFD), Steady-State Thermal, Modal Vibration Dynamics, High-Cycle Fatigue (Soderberg/Goodman Criteria), Aerodynamic Airfoil Modeling.</p>
-                <p><strong>CAD & Engineering Tools:</strong> ANSYS Student 2026 R1 (Workbench, Fluent), SolidWorks, Autodesk Fusion 360, Industrial Piping & P&ID, FreeCAD 1.1, AutoCAD, Gmsh.</p>
-                <p><strong>Programming & Automation:</strong> Python (NumPy, SciPy), Procedural CAD Automation (`cad_engine`), PyWin32 Windows Automation, Playwright, FastAPI, Docker, Nginx, Shell scripting.</p>
-                <p><strong>Financial & Data Systems:</strong> Accounts Payable (AP) Administration, Cheque Reconciliation Pipelines, Advanced Excel (VLOOKUP, Pivot Tables).</p>
-                <p><strong>3D Rendering & Video Editing:</strong> 3D Product Rendering, KeyShot, CAD Animation Turntables, Exploded Assemblies, Timeline Video Editing, Engineering Presentation Reels.</p>
+            <!-- Download and Print CTAs -->
+            <div class="download-actions">
+                <a id="btn-download-pdf" href="assets/docs/Ibrahim_Ihsan_Mechanical_Engineer_Resume.pdf" download class="download-btn" title="Download ATS-Optimized 1-Page PDF">
+                    <span>📥</span>
+                    <span>Download PDF</span>
+                </a>
+                <button type="button" onclick="window.print()" class="print-btn" title="Print Current View">
+                    <span>🖨️</span>
+                    <span>Print</span>
+                </button>
             </div>
-        </section>
+        </div>
+    </aside>
 
-        <section>
-            <h2>Freelance Engineering & Consulting Experience</h2>
-            <div class="item-header">
-                <span>Freelance CAE Simulation & CAD Specialist</span>
-                <span>2025 – Present</span>
-            </div>
-            <div class="item-sub">
-                <span>Remote Independent Engineering Consultant (ANSYS, SolidWorks, Autodesk Fusion 360)</span>
-                <span>Client Contracts</span>
-            </div>
-            <ul>
-                <li><strong>Weld Simulation Package (TR-BW8-MAG-MT-001):</strong> Executed transient thermal and residual stress FEA on S355J2 multi-pass MAG weld joints; delivered verified temperature gradient contours and distortion prevention reports.</li>
-                <li><strong>Parametric Machine Assemblies:</strong> Developed manufacturing-ready 3D CAD models and sheet metal components in SolidWorks and Fusion 360 with GD&T drawings, STEP, and IGES client deliverables.</li>
-                <li><strong>Aerodynamic CFD Deliverables (NACA 0015):</strong> Conducted external fluid flow simulations on custom stepped airfoils (NACA 0015 Phase 1), computing lift/drag polars and surface pressure coefficients in ANSYS Fluent.</li>
-                <li><strong>Academic &amp; Research Project Consulting:</strong> Consulted on final-year engineering projects (B.Tech/M.Tech), authoring Scopus/IEEE-standard research papers, PhD thesis documentation, and high-impact seminar presentations (PPTs).</li>
-                <li><strong>20-Bar Pressurized Nozzle CFD Simulation:</strong> Simulated high-pressure pneumatic/hydraulic fluid flow in circular nozzles under 20-bar operating conditions, evaluating velocity expansion and wall stresses.</li>
-            </ul>
-        </section>
+    <!-- Main Resume Container -->
+    <main class="stage-wrapper">
+        <article class="resume-sheet">
+            
+            <!-- HEADER (Universal) -->
+            <header class="sheet-header">
+                <h1 class="applicant-name">IBRAHIM IHSAN</h1>
+                <div class="applicant-headline" id="header-headline">
+                    Mechanical Engineering Undergraduate | CAE Simulation, 3D CAD &amp; Engineering Automation
+                </div>
+                <div class="sheet-contact">
+                    <span>Kollam, Kerala, India</span>
+                    <span>•</span>
+                    <span>+91 9446631380</span>
+                    <span>•</span>
+                    <span><a href="mailto:ibrahimihsan.work@gmail.com">ibrahimihsan.work@gmail.com</a></span>
+                    <span>•</span>
+                    <span><a href="https://ibrahimihsan.vercel.app">ibrahimihsan.vercel.app</a></span>
+                    <span>•</span>
+                    <span><a href="https://wa.me/919446631380" target="_blank">WhatsApp</a></span>
+                </div>
+            </header>
 
-        <section>
-            <h2>Key Technical Projects</h2>
-            <div class="item-header">
-                <span>Autonomous Multiphysics Simulation Suite</span>
-                <span>ANSYS & FreeCAD</span>
-            </div>
-            <ul>
-                <li>Formulated automated headless FEA pipelines solving multi-fin heat sink dissipation ($Q=100\text{ W}$, $h=30\text{ W/m}^2\text{K}$) within <strong>&lt; 2.35% error</strong> against closed-form analytical equations.</li>
-                <li>Conducted modal vibration dynamics on connecting rods, predicting fundamental mode 1 ($234.40\text{ Hz}$) with 4.17% analytical accuracy and infinite fatigue life ($>10^7$ cycles, FoS 2.41).</li>
-                <li>Built a generative optimization loop reducing structural I-beam mass by <strong>65.0%</strong> (628.2g to 220.1g) at target FoS = 2.0.</li>
-            </ul>
+            <!-- EDUCATION (Universal) -->
+            <section class="resume-section">
+                <h2 class="section-heading">Education</h2>
+                <div class="item-row">
+                    <span>TKM College of Engineering, Kollam</span>
+                    <span>2024 – 2028 (Expected)</span>
+                </div>
+                <div class="item-sub-row">
+                    <span>Bachelor of Technology (B.Tech) in Mechanical Engineering (Current: 3rd Semester)</span>
+                    <span>Kollam, Kerala, India</span>
+                </div>
+                <ul class="resume-bullets">
+                    <li><strong>Relevant Coursework:</strong> Mechanics of Solids, Fluid Mechanics, Engineering Thermodynamics, Heat &amp; Mass Transfer, Machine Drawing &amp; CAD, Kinematics, Material Science, Computational Numerical Methods.</li>
+                </ul>
+            </section>
 
-            <div class="item-header" style="margin-top: 5px;">
-                <span>Enterprise AP Ledger &amp; Cheque Tracking System</span>
-                <span>Financial Data Systems</span>
-            </div>
-            <ul>
-                <li>Architected an automated Accounts Payable reconciliation platform for a multi-branch retail enterprise, achieving 100% cheque clearing accuracy across 100+ supplier accounts and eliminating balance discrepancies.</li>
-            </ul>
+            <!-- ============================================== -->
+            <!-- VIEW 1: COMPREHENSIVE / MASTER RESUME          -->
+            <!-- ============================================== -->
+            <div id="view-master" class="resume-view active-view" role="tabpanel" aria-labelledby="tab-master">
+                
+                <section class="resume-section">
+                    <h2 class="section-heading">Technical Competencies</h2>
+                    <table class="skills-table">
+                        <tr>
+                            <td class="skill-label">CAE &amp; Simulation:</td>
+                            <td>ANSYS Fluent (2026 R1), ANSYS Mechanical (Workbench), Gmsh, CalculiX, FreeCAD FEM.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">CAD &amp; Machine Design:</td>
+                            <td>SolidWorks, Autodesk Fusion 360, FreeCAD, AutoCAD (2D/3D), ASME Y14.5 GD&amp;T, Sheet Metal.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Physics Disciplines:</td>
+                            <td>External Aerodynamics, Conjugate Heat Transfer (CHT), Transient Thermal FEA, Modal Dynamics, Fatigue.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Programming &amp; MEP:</td>
+                            <td>Python (NumPy, SciPy, ezdxf), Procedural 2D MEP Schematic Routing, Batch Telemetry Processing.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Operations Systems:</td>
+                            <td>Accounts Payable (AP) Reconciliations, Bank Clearing Pipelines, Advanced Excel (VLOOKUP, Pivot Tables).</td>
+                        </tr>
+                    </table>
+                </section>
 
-            <div class="item-header" style="margin-top: 5px;">
-                <span>MEPLANIQ: Automated 2D MEP Engineering System</span>
-                <span>Python &amp; Procedural CAD</span>
-            </div>
-            <ul>
-                <li>Developed an automated 2D drafting and routing system for Mechanical, Electrical, and Plumbing (MEP) schematics. Procedurally generates HVAC ductwork and piping pathways directly from architectural blueprints into DXF format.</li>
-            </ul>
-        </section>
+                <section class="resume-section">
+                    <h2 class="section-heading">Selected Engineering Projects</h2>
 
-        <section>
-            <h2>Academic Focus &amp; Student Memberships</h2>
-            <ul>
-                <li><strong>Student Member:</strong> American Society of Mechanical Engineers (ASME Student Section), TKM College of Engineering.</li>
-                <li><strong>Consulting Practice:</strong> Independent Freelance Consultant specializing in ANSYS Fluent / FEA numerical simulation packages, SolidWorks parametric machine design, and procedural 2D MEP automation.</li>
-            </ul>
-        </section>
-    </div>
+                    <div class="item-row">
+                        <span>NACA 0015 Stepped Airfoil Aerodynamic CFD Study</span>
+                        <span>ANSYS Fluent 2026 R1 &amp; FreeCAD</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Boundary layer separation delay &amp; aerodynamic benchmark</span>
+                        <span>Fluid Dynamics</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Constructed 2D parametric stepped airfoil geometry and structured multi-block C-grid (240,000 cells, y+ &lt; 1.0) resolving boundary layer flow across angles of attack from 0° to 16°.</li>
+                        <li>Solved incompressible Navier-Stokes equations with Realizable k-ε turbulence model and Enhanced Wall Treatment; validated lift coefficient (C_L = 1.18 at 14°) within +2.6% of Abbott &amp; von Doenhoff wind tunnel data.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>S355J2 Structural Butt-Weld Transient Thermal FEA</span>
+                        <span>Gmsh &amp; ANSYS Workbench</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>3-Pass MAG welding thermal dissipation model (TR-BW8-MAG-MT-001)</span>
+                        <span>Thermal FEA</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Modeled 3D transient temperature field in 8 mm S355J2 structural steel plates under 3-pass MAG welding using a calibrated Goldak moving heat source (24 V, 220 A) with temperature-dependent k(T) and C_p(T).</li>
+                        <li>Evaluated cooling rate t_8/5 (800 °C to 500 °C) at 11.4 seconds, satisfying ISO 15614-1 requirements to avoid brittle martensite.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>MEPLANIQ: Procedural 2D MEP Schematic &amp; Routing Engine</span>
+                        <span>Python &amp; AutoCAD DXF</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Algorithmic drafting automation for architectural engineering</span>
+                        <span>Computational Design</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Developed an automated 2D routing engine using Python and <code>ezdxf</code> that converts architectural floorplans into clash-free plumbing and HVAC schematics directly into layered DXF format.</li>
+                        <li>Implemented 230 mm wall offset detection and parallel +70 mm supply clearances, generating multi-room layouts and synchronized bill-of-quantities (BOQ) schedules in milliseconds.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>Multi-Fin Convective Heat Sink Thermal Simulation</span>
+                        <span>ANSYS Mechanical &amp; FreeCAD</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Convective heat dissipation benchmark</span>
+                        <span>Heat Transfer</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Simulated forced air cooling (h = 30 W/(m²·K)) on an extruded Aluminum 6061-T6 heat sink under Q = 100 W thermal load; correlated peak junction temperature (66.8 °C) within 2.35% error of 1D analytical resistance equations (68.5 °C).</li>
+                    </ul>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Freelance Engineering &amp; Operational Experience</h2>
+                    <div class="item-row">
+                        <span>Freelance CAE Simulation &amp; CAD Specialist</span>
+                        <span>2025 – Present</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Independent numerical simulation and manufacturing-ready CAD deliverables</span>
+                        <span>Kollam, India</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Provided computational simulation (ANSYS Fluent / Workbench) and mesh convergence studies for student researchers and institutional projects.</li>
+                        <li>Created automated Accounts Payable reconciliation pipelines across 5 retail branches, eliminating month-end discrepancies.</li>
+                    </ul>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Academic Memberships &amp; Activities</h2>
+                    <ul class="resume-bullets">
+                        <li><strong>Student Member:</strong> American Society of Mechanical Engineers (ASME Collegiate Section), TKM College of Engineering.</li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- ============================================== -->
+            <!-- VIEW 2: CAE & CFD SIMULATION SPECIALIST        -->
+            <!-- ============================================== -->
+            <div id="view-cae" class="resume-view" role="tabpanel" aria-labelledby="tab-cae">
+                
+                <section class="resume-section">
+                    <h2 class="section-heading">Technical Competencies</h2>
+                    <table class="skills-table">
+                        <tr>
+                            <td class="skill-label">CAE &amp; Multiphysics:</td>
+                            <td>ANSYS Fluent (2026 R1), ANSYS Mechanical (Workbench), Gmsh, CalculiX, FreeCAD FEM.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Physical Modeling:</td>
+                            <td>External Aerodynamics, Conjugate Heat Transfer (CHT), Transient Thermal FEA, Modal Dynamics, Fatigue.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">CAD &amp; Geometry:</td>
+                            <td>SolidWorks, Autodesk Fusion 360, FreeCAD, Parasolid/STEP/IGES B-Rep repair and mesh defeaturing.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Engineering Scripting:</td>
+                            <td>Python (NumPy, SciPy, Matplotlib), Automated Mesh Generation, Post-Processing Telemetry.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Standards &amp; Codes:</td>
+                            <td>ISO 15614-1 (Welding Procedure Specification), ASME Y14.5 (GD&amp;T), ASHRAE Fundamentals.</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Selected CAE &amp; CFD Simulation Projects</h2>
+
+                    <div class="item-row">
+                        <span>NACA 0015 Stepped Airfoil Aerodynamic CFD Study</span>
+                        <span>ANSYS Fluent 2026 R1 &amp; FreeCAD</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Computational fluid dynamics benchmark on separation delay</span>
+                        <span>Numerical Research</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Constructed 2D parametric stepped airfoil geometry and structured multi-block C-grid domain (240,000 cells) maintaining boundary layer wall spacing at y+ &lt; 1.0 across angles of attack from 0° to 16°.</li>
+                        <li>Solved incompressible Navier-Stokes equations with Realizable k-ε turbulence model and Enhanced Wall Treatment; validated lift coefficient (C_L = 1.18 at 14°) within +2.6% of Abbott &amp; von Doenhoff wind tunnel data.</li>
+                        <li>Characterized localized vortex formation along the step that delayed upper-surface boundary layer separation.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>S355J2 Structural Butt-Weld Transient Thermal FEA</span>
+                        <span>Gmsh &amp; ANSYS Workbench</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Thermal dissipation and cooling rate analysis (Project Code: TR-BW8-MAG-MT-001)</span>
+                        <span>Engineering Simulation</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Modeled 3D transient thermal history of 8 mm S355J2 structural steel plates under 3-pass Metal Active Gas (MAG) welding using a calibrated Goldak double-ellipsoidal moving heat source (24 V, 220 A).</li>
+                        <li>Implemented temperature-dependent thermal conductivity k(T) and specific heat C_p(T); predicted peak weld pool temperature of 1,740 °C and mapped Heat-Affected Zone (HAZ) isotherms.</li>
+                        <li>Determined cooling time t_8/5 (800 °C to 500 °C) at 11.4 seconds, satisfying ISO 15614-1 guidelines to avoid martensitic embrittlement.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>Multi-Fin Convective Heat Sink Thermal Simulation</span>
+                        <span>ANSYS Mechanical &amp; FreeCAD</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Convective heat dissipation benchmark</span>
+                        <span>Thermal Analysis</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Analyzed steady-state thermal behavior of extruded Aluminum 6061-T6 multi-fin heat sink dissipating a Q = 100 W thermal load under forced air convection (h = 30 W/(m²·K), ambient temperature T_inf = 25 °C).</li>
+                        <li>Predicted peak junction temperature of 66.8 °C; validated numerical FEA result within 2.35% error against 1D fin-resistance analytical equations (68.5 °C).</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>Internal Combustion Engine Connecting Rod Modal &amp; Fatigue Analysis</span>
+                        <span>ANSYS Mechanical</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Eigenfrequency extraction and high-cycle fatigue assessment</span>
+                        <span>Structural Dynamics</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Extracted natural eigenfrequencies using Block Lanczos solver with fixed-pinned boundary conditions at journal bores; computed fundamental bending mode at 234.4 Hz (within 4.17% of Euler-Bernoulli beam theory).</li>
+                        <li>Evaluated cyclic inertia and peak pressure loading, confirming high-cycle fatigue safety factor &gt; 2.2 (&gt; 10^7 cycles) under Goodman mean-stress endurance criteria.</li>
+                    </ul>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Technical Consulting &amp; Practical Experience</h2>
+                    <div class="item-row">
+                        <span>Independent CAE Simulation &amp; Technical Consultant</span>
+                        <span>2025 – Present</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Project-based numerical analysis &amp; engineering documentation</span>
+                        <span>Kollam, India</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Provided computational simulation modeling (ANSYS Fluent / Workbench) and mesh convergence studies for student researchers, client assemblies, and institutional projects.</li>
+                        <li>Delivered technical validation reports, parametric CAD deliverables, and structured presentations for academic milestones and design reviews.</li>
+                    </ul>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Academic Memberships &amp; Activities</h2>
+                    <ul class="resume-bullets">
+                        <li><strong>Student Member:</strong> American Society of Mechanical Engineers (ASME Collegiate Section), TKM College of Engineering.</li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- ============================================== -->
+            <!-- VIEW 3: CAD DESIGN & AUTOMATION SPECIALIST     -->
+            <!-- ============================================== -->
+            <div id="view-cad" class="resume-view" role="tabpanel" aria-labelledby="tab-cad">
+                
+                <section class="resume-section">
+                    <h2 class="section-heading">Technical Competencies</h2>
+                    <table class="skills-table">
+                        <tr>
+                            <td class="skill-label">3D CAD &amp; Modeling:</td>
+                            <td>SolidWorks, Autodesk Fusion 360, FreeCAD, AutoCAD (2D/3D), STEP/IGES/Parasolid interoperability.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Engineering Automation:</td>
+                            <td>Python (ezdxf, NumPy), Procedural CAD Generation, PyWin32 Windows Automation, Shell Scripting.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Mechanical Design:</td>
+                            <td>Parametric Assemblies, ASME Y14.5 GD&amp;T, 3D Tolerance Stack-Up, Sheet Metal, Injection Molding Draft.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">BIM &amp; MEP Systems:</td>
+                            <td>Procedural 2D Piping &amp; HVAC Duct Routing, Clash Avoidance, DXF/DWG Layer Standards, BOQ Extraction.</td>
+                        </tr>
+                        <tr>
+                            <td class="skill-label">Operational Systems:</td>
+                            <td>Accounts Payable (AP) Reconciliations, Bank Statement Clearing Pipelines, Advanced Excel (VLOOKUP, Pivot Tables).</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Selected CAD &amp; Automation Projects</h2>
+
+                    <div class="item-row">
+                        <span>MEPLANIQ: Procedural 2D MEP Schematic &amp; Routing Engine</span>
+                        <span>Python &amp; AutoCAD DXF</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Algorithmic drafting automation for architectural engineering</span>
+                        <span>Software Development</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Developed an automated 2D routing engine using Python and <code>ezdxf</code> that transforms architectural floorplan boundaries into production-ready plumbing and HVAC schematics directly into layered DXF format.</li>
+                        <li>Implemented parametric wall offset algorithms (230 mm exterior/interior recognition) and parallel supply line clearances (+70 mm offset), generating clash-free multi-room layouts in milliseconds.</li>
+                        <li>Automated bill-of-quantities (BOQ) schedule extraction, calculating exact pipe run lengths and sanitary fixture counts into synchronized CSV/Excel tables.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>Parametric 3D Machine Assemblies &amp; Enclosures</span>
+                        <span>SolidWorks &amp; Autodesk Fusion 360</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Manufacturing-ready precision CAD components</span>
+                        <span>Mechanical Design</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Created parametric B-Rep solid models for multi-part mechanical assemblies, internal snap-fit brackets, and consumer electronics chassis with uniform wall thicknesses and mold draft angles.</li>
+                        <li>Conducted 3D assembly interference analyses and tolerance stack-up checks (±0.05 mm tolerance envelope), ensuring zero clearance collisions during full range of motion.</li>
+                        <li>Generated ASME Y14.5-compliant 2D production drawings with datum references, position tolerances, and sectional detail views for CNC machining and sheet metal fabrication.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>Enterprise Accounts Payable &amp; Bank Reconciliation Platform</span>
+                        <span>Data Automation</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Corporate multi-branch financial workflow automation</span>
+                        <span>Operations Systems</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Architected an automated Accounts Payable clearing pipeline consolidating ledgers across 5 retail branches into unified accounting dashboards.</li>
+                        <li>Engineered cascade filtering algorithms identifying unverified transactions and reconciling printed cheques against bank statements, eliminating monthly ledger discrepancies.</li>
+                        <li>Reduced manual vendor payment verification time by over 80% with automated supplier aging reports.</li>
+                    </ul>
+
+                    <div class="item-row" style="margin-top: 3px;">
+                        <span>Scripted Weldment Discretization &amp; Meshing Pipeline</span>
+                        <span>Gmsh &amp; FreeCAD</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Automated finite element geometry preparation</span>
+                        <span>Computational Tools</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Formulated procedural geometry scripts converting complex multi-pass weld groove designs into clean, partitioned volumes with structured boundary inflation layers.</li>
+                        <li>Automated export of verified 3D meshes (480,000 quadratic hybrid elements) for finite element thermal analysis, cutting geometry prep time from hours to seconds.</li>
+                    </ul>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Freelance Engineering &amp; Consulting Experience</h2>
+                    <div class="item-row">
+                        <span>Freelance CAD Designer &amp; Automation Consultant</span>
+                        <span>2025 – Present</span>
+                    </div>
+                    <div class="item-sub-row">
+                        <span>Independent design deliverables for clients and student researchers</span>
+                        <span>Kollam, India</span>
+                    </div>
+                    <ul class="resume-bullets">
+                        <li>Delivered verified 3D CAD assemblies (STEP, IGES, STL) and 2D fabrication drawings for prototype mechanisms, sheet metal brackets, and robotic sub-assemblies.</li>
+                        <li>Created custom Python utility scripts to automate repetitive DXF geometry modifications and bill-of-materials generation.</li>
+                    </ul>
+                </section>
+
+                <section class="resume-section">
+                    <h2 class="section-heading">Academic Memberships &amp; Activities</h2>
+                    <ul class="resume-bullets">
+                        <li><strong>Student Member:</strong> American Society of Mechanical Engineers (ASME Collegiate Section), TKM College of Engineering.</li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </article>
+    </main>
+
+    <script>
+        const VIEWS = {
+            master: {
+                headline: 'Mechanical Engineering Undergraduate | CAE Simulation, 3D CAD & Engineering Automation',
+                pdfUrl: 'assets/docs/Ibrahim_Ihsan_Mechanical_Engineer_Resume.pdf',
+                title: 'Resume — Ibrahim Ihsan | Mechanical Engineer'
+            },
+            cae: {
+                headline: 'Mechanical Engineering Undergraduate | Computational CAE & CFD Simulation',
+                pdfUrl: 'assets/docs/Ibrahim_Ihsan_CAE_CFD_Resume.pdf',
+                title: 'Resume (CAE/CFD) — Ibrahim Ihsan | Simulation Specialist'
+            },
+            cad: {
+                headline: 'Mechanical Engineering Undergraduate | Parametric 3D CAD & Engineering Automation',
+                pdfUrl: 'assets/docs/Ibrahim_Ihsan_CAD_Automation_Resume.pdf',
+                title: 'Resume (CAD/MEP) — Ibrahim Ihsan | CAD & Automation'
+            }
+        };
+
+        function switchResumeView(viewKey) {
+            if (!VIEWS[viewKey]) return;
+
+            // Update Tab states
+            ['master', 'cae', 'cad'].forEach(k => {
+                const tab = document.getElementById('tab-' + k);
+                const panel = document.getElementById('view-' + k);
+                if (tab) {
+                    const isActive = (k === viewKey);
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                }
+                if (panel) {
+                    panel.classList.toggle('active-view', k === viewKey);
+                }
+            });
+
+            // Update Headline & Title & Download Link
+            const meta = VIEWS[viewKey];
+            const headlineEl = document.getElementById('header-headline');
+            if (headlineEl) headlineEl.textContent = meta.headline;
+            document.title = meta.title;
+
+            const dlBtn = document.getElementById('btn-download-pdf');
+            if (dlBtn) dlBtn.setAttribute('href', meta.pdfUrl);
+
+            // Hash update without scroll jump
+            if (history.replaceState) {
+                history.replaceState(null, null, '#' + viewKey);
+            }
+        }
+
+        // Initialize from URL hash
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+            if (VIEWS[hash]) {
+                switchResumeView(hash);
+            }
+        });
+    </script>
 </body>
 </html>

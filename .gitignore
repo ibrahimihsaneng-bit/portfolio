@@ -1,3 +1,7 @@
+# Node dependencies
+node_modules/
+.npm/
+
 # Huge Blender 3D Movie Productions & Renders (>7GB total)
 CHRONO_LOTUS/
 VARNEX_E9_Automotive_CGI/

@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Design System & Custom Theme Extensions (Ibrahim Ihsan Portfolio)
+   ========================================================================== */
+
+/* Accessibility: Skip to Content */
+.skip-link {
+    position: absolute;
+    top: -999px;
+    left: 16px;
+    z-index: 9999;
+    padding: 10px 16px;
+    background: #F59E46;
+    color: #080A0D;
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transition: top 0.2s ease;
+}
+.skip-link:focus {
+    top: 16px;
+    outline: 2px solid #FFFFFF;
+}
+
+/* Glassmorphic Engineering Cards */
+.glass-card {
+    background: rgba(14, 16, 22, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    position: relative;
+}
+.glass-card:hover {
+    border-color: rgba(245, 158, 70, 0.4);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 70, 0.15);
+}
+.glass-card:focus-visible {
+    outline: 2px solid #F59E46;
+    outline-offset: 3px;
+}
+
+/* Filter Chips */
+.chip {
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    background: #0D0E13;
+    color: #94A3B8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.chip:hover {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+.chip.active {
+    background: #FFFFFF;
+    color: #080A0D;
+    border-color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+}
+.chip:focus-visible {
+    outline: 2px solid #F59E46;
+    outline-offset: 2px;
+}
+
+/* Nav item styles */
+.nav-item {
+    padding: 6px 14px;
+    border-radius: 9999px;
+    color: #A4AAB5;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+.nav-item:hover {
+    color: #F5F7FB;
+    background: rgba(255, 255, 255, 0.05);
+}
+.nav-item.active {
+    color: #F59E46;
+    background: rgba(245, 158, 70, 0.12);
+    border-color: rgba(245, 158, 70, 0.4);
+    font-weight: 600;
+    box-shadow: 0 0 14px rgba(245, 158, 70, 0.18);
+}
+.nav-item:focus-visible {
+    outline: 2px solid #F59E46;
+    outline-offset: 2px;
+}
+
+/* Section Scroll Offset */
+section[id] {
+    scroll-margin-top: 5.5rem;
+}
+
+/* Case Study Dialog Tabs */
+.case-tab {
+    padding: 8px 16px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 8px;
+    color: #A4AAB5;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.case-tab:hover {
+    color: #F5F7FB;
+    background: rgba(255, 255, 255, 0.05);
+}
+.case-tab.active {
+    color: #080A0D;
+    background: #F59E46;
+    border-color: #F59E46;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(245, 158, 70, 0.3);
+}
+.case-tab:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+}
+
+/* High-Contrast Credential Pass Card */
+.credential-pass {
+    background: linear-gradient(135deg, #F59E46 0%, #D97706 50%, #B45309 100%);
+    border-radius: 24px;
+    color: #0D0701;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 25px 50px -12px rgba(217, 119, 6, 0.3);
+}
+
+/* Before / After Comparison Reveal Component */
+.compare-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+    user-select: none;
+    background: #04060A;
+}
+.compare-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    pointer-events: none;
+}
+.compare-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    overflow: hidden;
+    will-change: width;
+    border-right: 2px solid #F59E46;
+    box-shadow: 2px 0 12px rgba(245, 158, 70, 0.5);
+}
+.compare-overlay img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+}
+.compare-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F59E46;
+    color: #080A0D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    box-shadow: 0 0 16px rgba(245, 158, 70, 0.8), 0 2px 6px rgba(0,0,0,0.5);
+    pointer-events: none;
+    z-index: 10;
+}
+.compare-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 20;
+    margin: 0;
+}
+.compare-range:focus-visible ~ .compare-handle {
+    outline: 3px solid #FFFFFF;
+    outline-offset: 3px;
+}
+
+/* Comparison Slider (Alternative / JavaScript Driven) */
+.comparison-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+}
+.slider-before {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+.slider-after {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+.slider-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #F59E46;
+    box-shadow: 0 0 12px rgba(245, 158, 70, 0.8);
+    pointer-events: none;
+    z-index: 10;
+}
+.slider-handle {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F59E46;
+    color: #080A0D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    cursor: ew-resize;
+    z-index: 20;
+    box-shadow: 0 0 16px rgba(245, 158, 70, 0.8), 0 2px 6px rgba(0,0,0,0.5);
+    border: 2px solid #FFFFFF;
+}
+.slider-handle:focus-visible {
+    outline: 3px solid #FFFFFF;
+    outline-offset: 3px;
+}
+
+/* Infinite Marquee */
+.marquee-container {
+    overflow: hidden;
+    user-select: none;
+    mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
+}
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 36s linear infinite;
+}
+.marquee-container:hover .marquee-track {
+    animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+}
+
+/* White / Light View Theme Support */
+body.white-view-theme {
+    background-color: #F8FAFC !important;
+    color: #0F172A !important;
+    background-image: none !important;
+}
+body.white-view-theme .glass-card {
+    background: #FFFFFF !important;
+    border-color: #E2E8F0 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+body.white-view-theme .text-\[\#F5F7FB\],
+body.white-view-theme .text-white {
+    color: #0F172A !important;
+}
+body.white-view-theme .text-\[\#A4AAB5\],
+body.white-view-theme .text-slate-400 {
+    color: #475569 !important;
+}
+body.white-view-theme header {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: #E2E8F0 !important;
+}
+
+/* Reduced Motion Setting Support (WCAG 2.2 Requirement) */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .marquee-track {
+        animation: none !important;
+        transform: none !important;
+        overflow-x: auto;
+    }
+    .compare-overlay {
+        transition: none !important;
+    }
+    .neon-star, .neon-star-delayed {
+        animation: none !important;
+    }
+}
