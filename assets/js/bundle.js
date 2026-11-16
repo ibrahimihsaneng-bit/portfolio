@@ -990,7 +990,942 @@
     // =========================================================================
     // 6. INITIALIZATION ON DOM READY
     // =========================================================================
-    document.addEventListener('DOMContentLoaded', () => {
+    
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 1: 360° ROTARY CAPABILITY ORBIT CONTROLLER
+    // =========================================================================
+        const ORBIT_DISCIPLINES = [
+            { 
+                id: "cfd",
+                title: "CAE & SIMULATION", 
+                filter: "cfd", 
+                color: "#6366F1",
+                glow: "rgba(99,102,241,0.65)", 
+                border: "rgba(99,102,241,0.95)",
+                aura: "radial-gradient(circle 540px at 50% 50%, rgba(99, 102, 241, 0.22), rgba(30, 27, 75, 0.12) 55%, transparent 85%)",
+                animId: "anim-cfd"
+            },
+            { 
+                id: "cad",
+                title: "CAD & MACHINE DESIGN", 
+                filter: "cad", 
+                color: "#F59E0B",
+                glow: "rgba(245,158,11,0.65)", 
+                border: "rgba(245,158,11,0.95)",
+                aura: "radial-gradient(circle 540px at 50% 50%, rgba(245, 158, 11, 0.22), rgba(69, 26, 3, 0.12) 55%, transparent 85%)",
+                animId: "anim-cad"
+            },
+            { 
+                id: "mep",
+                title: "AUTOMATION & MEP (MEPLANIQ)", 
+                filter: "mep", 
+                color: "#10B981",
+                glow: "rgba(16,185,129,0.75)", 
+                border: "rgba(52,211,153,0.95)",
+                aura: "radial-gradient(circle 540px at 50% 50%, rgba(16, 185, 129, 0.24), rgba(6, 78, 59, 0.12) 55%, transparent 85%)",
+                animId: "anim-mep"
+            },
+            { 
+                id: "ops",
+                title: "DATA & AP OPERATIONS", 
+                filter: "mep", 
+                color: "#F97316",
+                glow: "rgba(249,115,22,0.65)", 
+                border: "rgba(249,115,22,0.95)",
+                aura: "radial-gradient(circle 540px at 50% 50%, rgba(249, 115, 22, 0.22), rgba(24, 24, 27, 0.15) 55%, transparent 85%)",
+                animId: "anim-ops"
+            },
+            { 
+                id: "motion",
+                title: "3D RENDERING & MOTION", 
+                filter: "all", 
+                color: "#06B6D4",
+                glow: "rgba(6,182,212,0.65)", 
+                border: "rgba(6,182,212,0.95)",
+                aura: "radial-gradient(circle 540px at 50% 50%, rgba(6, 182, 212, 0.24), rgba(8, 51, 68, 0.12) 55%, transparent 85%)",
+                animId: "anim-motion"
+            }
+        ];
+
+        let orbitActiveIndex = 2; // MEPLANIQ initially centered in front
+        let orbitWheelCooldown = false;
+
+        function getOrbitParams() {
+            const w = window.innerWidth;
+            if (w >= 1280) {
+                return { rx: 440, ry: 32, maxScale: 1.15, minScale: 0.78, maxRot: 20 };
+            } else if (w >= 1024) {
+                return { rx: 370, ry: 28, maxScale: 1.10, minScale: 0.75, maxRot: 18 };
+            } else if (w >= 768) {
+                return { rx: 290, ry: 24, maxScale: 1.06, minScale: 0.72, maxRot: 15 };
+            } else {
+                return { rx: 160, ry: 0, maxScale: 1.02, minScale: 0.80, maxRot: 0 };
+            }
+        }
+
+        function updateOrbitLayout() {
+            const cards = document.querySelectorAll('.orbit-card');
+            const pills = document.querySelectorAll('.orbit-indicator-pill');
+            const stationLabel = document.getElementById('orbit-station-label');
+            const params = getOrbitParams();
+            const isMobile = window.innerWidth < 640;
+
+            cards.forEach((card, i) => {
+                // Difference from active index normalized to [-180, 180] degrees
+                const diff = (i - orbitActiveIndex + 5) % 5;
+                let deg = diff * 72;
+                if (deg > 180) deg -= 360; // 0, 72, 144, -144, -72
+                
+                const isFront = (deg === 0);
+                const disc = ORBIT_DISCIPLINES[i];
+
+                if (isMobile) {
+                    // Mobile: single card visible in center, smooth horizontal slide
+                    if (isFront) {
+                        card.style.transform = 'translate3d(0px, 0px, 0px) scale(1)';
+                        card.style.opacity = '1';
+                        card.style.zIndex = '50';
+                        card.style.pointerEvents = 'auto';
+                    } else if (diff === 1 || diff === -4) {
+                        card.style.transform = 'translate3d(120%, 0px, 0px) scale(0.85)';
+                        card.style.opacity = '0';
+                        card.style.zIndex = '10';
+                        card.style.pointerEvents = 'none';
+                    } else if (diff === 4 || diff === -1) {
+                        card.style.transform = 'translate3d(-120%, 0px, 0px) scale(0.85)';
+                        card.style.opacity = '0';
+                        card.style.zIndex = '10';
+                        card.style.pointerEvents = 'none';
+                    } else {
+                        card.style.transform = 'translate3d(0px, 0px, -200px) scale(0.6)';
+                        card.style.opacity = '0';
+                        card.style.zIndex = '1';
+                        card.style.pointerEvents = 'none';
+                    }
+                } else {
+                    const rad = deg * (Math.PI / 180);
+                    const sin = Math.sin(rad);
+                    const cos = Math.cos(rad);
+
+                    // Circular coordinates on the ellipse
+                    const x = sin * params.rx;
+                    const y = (1 - cos) * params.ry;
+
+                    // Depth factor t from 0 (back) to 1 (front apex)
+                    const t = (cos + 1) / 2;
+                    
+                    // Scale swells dynamically as card travels to front
+                    const scale = params.minScale + (params.maxScale - params.minScale) * Math.pow(t, 1.25);
+                    const rotY = -sin * params.maxRot;
+                    const rotZ = -sin * 1.2;
+                    const opacity = isFront ? 1.0 : (Math.abs(deg) === 72 ? 0.72 : 0.25);
+                    const zIndex = Math.round(t * 50) + 10;
+
+                    card.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0px) rotateY(${rotY.toFixed(1)}deg) rotateZ(${rotZ.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+                    card.style.opacity = opacity.toFixed(2);
+                    card.style.zIndex = zIndex;
+                    card.style.pointerEvents = 'auto';
+                }
+
+                if (isFront) {
+                    card.classList.add('is-active');
+                    card.style.boxShadow = `0 25px 65px -10px ${disc.glow}, 0 0 35px ${disc.glow}`;
+                    card.style.borderColor = disc.border;
+                } else {
+                    card.classList.remove('is-active');
+                    card.style.boxShadow = `0 10px 30px -10px rgba(0,0,0,0.7)`;
+                    card.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+                }
+            });
+
+            // Update discipline-specific background vector animations
+            const animLayers = ['anim-cfd', 'anim-cad', 'anim-mep', 'anim-ops', 'anim-motion'];
+            const activeDisc = ORBIT_DISCIPLINES[orbitActiveIndex];
+            animLayers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (activeDisc && activeDisc.animId === id) {
+                        el.classList.remove('opacity-0');
+                        el.classList.add('opacity-100');
+                    } else {
+                        el.classList.remove('opacity-100');
+                        el.classList.add('opacity-0');
+                    }
+                }
+            });
+
+            // Update soft background colour aura spread
+            const auraEl = document.getElementById('focus-ambient-aura');
+            if (auraEl && activeDisc && activeDisc.aura) {
+                auraEl.style.background = activeDisc.aura;
+            }
+
+            // Update bottom indicator pills
+            pills.forEach((p, idx) => {
+                if (idx === orbitActiveIndex) {
+                    p.classList.add('active');
+                } else {
+                    p.classList.remove('active');
+                }
+            });
+
+            // Update top station readout
+            if (stationLabel && ORBIT_DISCIPLINES[orbitActiveIndex]) {
+                stationLabel.textContent = `[0${orbitActiveIndex + 1} / 05] ${ORBIT_DISCIPLINES[orbitActiveIndex].title}`;
+            }
+        }
+
+        function rotateOrbitTo(index) {
+            orbitActiveIndex = ((index % 5) + 5) % 5;
+            updateOrbitLayout();
+        }
+
+        function nextOrbitCard() {
+            rotateOrbitTo(orbitActiveIndex + 1);
+        }
+
+        function prevOrbitCard() {
+            rotateOrbitTo(orbitActiveIndex - 1);
+        }
+
+        function handleCardClick(index) {
+            if (index === orbitActiveIndex) {
+                // If clicked while already front card, filter relevant projects
+                const disc = ORBIT_DISCIPLINES[index];
+                if (disc && disc.filter) {
+                    filterProjects(disc.filter);
+                }
+            } else {
+                // Rotate clicked card to the front
+                rotateOrbitTo(index);
+            }
+        }
+
+        function initOrbitCarousel() {
+            const stage = document.getElementById('orbit-stage-container');
+            if (!stage) return;
+
+            updateOrbitLayout();
+
+            // Rotary Carousel Wheel Rotation Listener (restored per user request: spins cards smoothly on wheel scroll)
+            stage.addEventListener('wheel', (e) => {
+                const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+                if (Math.abs(delta) > 12) {
+                    e.preventDefault();
+                    if (!orbitWheelCooldown) {
+                        orbitWheelCooldown = true;
+                        if (delta > 0) {
+                            nextOrbitCard();
+                        } else {
+                            prevOrbitCard();
+                        }
+                        setTimeout(() => { orbitWheelCooldown = false; }, 320);
+                    }
+                }
+            }, { passive: false });
+
+            // Touch swipe support: strictly horizontal swipes rotate cards; vertical gestures scroll page freely
+            let touchStartX = 0;
+            let touchStartY = 0;
+            stage.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            stage.addEventListener('touchend', (e) => {
+                const diffX = e.changedTouches[0].clientX - touchStartX;
+                const diffY = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(diffX) > Math.abs(diffY) * 1.6 && Math.abs(diffX) > 40) {
+                    if (diffX < 0) {
+                        nextOrbitCard();
+                    } else {
+                        prevOrbitCard();
+                    }
+                }
+            }, { passive: true });
+
+            // Direct Horizontal Mouse Drag on Carousel Track
+            const orbitTrack = document.getElementById('orbit-track');
+            if (orbitTrack) {
+                let isDragging = false;
+                let startX = 0;
+                let dragMoved = 0;
+
+                orbitTrack.addEventListener('mousedown', (e) => {
+                    if (e.button !== 0) return;
+                    isDragging = true;
+                    startX = e.clientX;
+                    dragMoved = 0;
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    dragMoved = e.clientX - startX;
+                });
+
+                window.addEventListener('mouseup', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    if (Math.abs(dragMoved) > 50) {
+                        if (dragMoved < 0) {
+                            nextOrbitCard();
+                        } else {
+                            prevOrbitCard();
+                        }
+                    }
+                    dragMoved = 0;
+                });
+            }
+
+            // Keyboard arrow support (Left / Right rotate without blocking vertical page navigation)
+            stage.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextOrbitCard();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevOrbitCard();
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                updateOrbitLayout();
+            });
+        }
+
+        // ==========================================
+        // Lusion-Inspired Preloader & Video Engine
+        // ==========================================
+        const HERO_FEEDS = [
+            { label: "🎬 VIDEO: SANCTUARY MASTERPIECE", src: "assets/videos/sanctuary_100x_masterpiece.mp4" },
+            { label: "🚗 VIDEO: AUTOMOTIVE CGI", src: "assets/videos/hero_cinematic_varnex.mp4" },
+            { label: "🧊 VIDEO: DAMPER CAE SIMULATION", src: "assets/videos/hero_simulation_damper.mp4" },
+            { label: "⚙️ VIDEO: PRODUCT DESIGN CGI", src: "assets/videos/hero_cinematic_kynora.mp4" }
+        ];
+        let currentFeedIdx = 0;
+
+        // ==========================================
+        // Hero Eye Theme Switcher (Obsidian Dark ⇄ Luminous White)
+        // ==========================================
+        let isHeroWhiteMode = false;
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 2: HIGH-FIDELITY PRELOADER
+    // =========================================================================
+        function initLusionPreloader() {
+            const preloader = document.getElementById('lusion-preloader');
+            const counter = document.getElementById('preloader-counter');
+            const bar = document.getElementById('preloader-bar');
+            const status = document.getElementById('preloader-status');
+            const heroVideo = document.getElementById('hero-bg-video');
+            if (!preloader) return;
+
+            const milestones = [
+                { threshold: 24, text: "[01/04] INITIALIZING NUMERICAL CAE KERNEL..." },
+                { threshold: 54, text: "[02/04] LOADING FINITE ELEMENT & FLUENT MESH..." },
+                { threshold: 84, text: "[03/04] COMPILING PROCEDURAL 2D MEP ROUTING..." },
+                { threshold: 99, text: "[04/04] VERIFYING TELEMETRY & CONVERGENCE..." },
+                { threshold: 100, text: "[READY] CONVERGENCE REACHED. WELCOME." }
+            ];
+
+            let progress = 0;
+            const startTime = performance.now();
+            const totalDuration = 1400; // 1.4s smooth count
+            let isDismissed = false;
+
+            window.dismissPreloader = function dismissPreloader() {
+                const preloader = document.getElementById('lusion-preloader');
+                const heroVideo = document.getElementById('hero-bg-video');
+                if (preloader) {
+                    preloader.style.transition = 'transform 0.65s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease';
+                    preloader.style.transform = 'translateY(-100%)';
+                    preloader.style.opacity = '0';
+                    preloader.style.pointerEvents = 'none';
+                    setTimeout(() => { preloader.style.display = 'none'; }, 700);
+                }
+                if (heroVideo) {
+                    heroVideo.play().catch(() => {});
+                }
+            };
+            function localDismissPreloader() {
+                if (isDismissed) return;
+                isDismissed = true;
+                preloader.style.transition = 'transform 0.75s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s ease';
+                preloader.style.transform = 'translateY(-100%)';
+                preloader.style.opacity = '0';
+                preloader.style.pointerEvents = 'none';
+
+                if (heroVideo) {
+                    heroVideo.play().catch(() => {});
+                }
+
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 800);
+            }
+
+            function updateCounter() {
+                if (isDismissed) return;
+                const now = performance.now();
+                const elapsed = now - startTime;
+                const rawProgress = Math.min(elapsed / totalDuration, 1);
+                
+                // Ease out cubic progress
+                const easeProgress = 1 - Math.pow(1 - rawProgress, 3);
+                progress = Math.floor(easeProgress * 100);
+
+                if (counter) counter.textContent = (progress < 10 ? '0' : '') + progress + '%';
+                if (bar) bar.style.width = progress + '%';
+
+                if (status) {
+                    for (const m of milestones) {
+                        if (progress <= m.threshold) {
+                            status.textContent = m.text;
+                            break;
+                        }
+                    }
+                }
+
+                if (rawProgress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    setTimeout(window.dismissPreloader, 100);
+                }
+            }
+
+            // Guaranteed Fail-Safe Fallback: Always dismisses within 2.0s even if browser throttles RAF
+            setTimeout(window.dismissPreloader, 2000);
+
+            requestAnimationFrame(updateCounter);
+        }
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 3: EMERALD WATER RIPPLE OPTICS
+    // =========================================================================
+        function initMoreWorkWaterRipple() {
+            const canvas = document.getElementById('more-work-fluid-canvas');
+            const section = document.getElementById('more-work');
+            if (!canvas || !section) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let width = 0;
+            let height = 0;
+            let dpr = 1;
+            let ripples = [];
+            let droplets = [];
+            let lastSpawn = 0;
+
+            function resize() {
+                const rect = section.getBoundingClientRect();
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = rect.width;
+                height = rect.height;
+                if (width === 0 || height === 0) return;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.scale(dpr, dpr);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class WaterRipple {
+                constructor(x, y, maxR, strength) {
+                    this.x = x;
+                    this.y = y;
+                    this.r = 6;
+                    this.maxR = maxR || 140;
+                    this.alpha = strength || 0.7;
+                    this.decay = 0.012;
+                    this.speed = 2.4;
+                }
+                update() {
+                    this.r += this.speed;
+                    this.alpha -= this.decay;
+                }
+                draw(c) {
+                    if (this.alpha <= 0) return;
+                    c.save();
+                    c.strokeStyle = 'rgba(52, 211, 153, ' + (this.alpha * 0.75) + ')';
+                    c.lineWidth = 2.2;
+                    c.beginPath();
+                    c.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    c.stroke();
+
+                    // Inner concentric echo ring
+                    if (this.r > 20) {
+                        c.strokeStyle = 'rgba(16, 185, 129, ' + (this.alpha * 0.45) + ')';
+                        c.lineWidth = 1.2;
+                        c.beginPath();
+                        c.arc(this.x, this.y, this.r * 0.65, 0, Math.PI * 2);
+                        c.stroke();
+                    }
+                    c.restore();
+                }
+            }
+
+            class WaterPuff {
+                constructor(x, y, vx, vy) {
+                    this.x = x;
+                    this.y = y;
+                    this.vx = vx * 0.15 + (Math.random() - 0.5) * 0.8;
+                    this.vy = vy * 0.15 + (Math.random() - 0.5) * 0.8;
+                    this.radius = 20 + Math.random() * 24;
+                    this.maxRadius = this.radius * 1.8;
+                    this.alpha = 0.5;
+                    this.decay = 0.01 + Math.random() * 0.008;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vx *= 0.94;
+                    this.vy *= 0.94;
+                    if (this.radius < this.maxRadius) {
+                        this.radius += (this.maxRadius - this.radius) * 0.05;
+                    }
+                    this.alpha -= this.decay;
+                }
+                draw(c) {
+                    if (this.alpha <= 0) return;
+                    c.save();
+                    c.globalCompositeOperation = 'screen';
+                    const grad = c.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                    grad.addColorStop(0, 'rgba(52, 211, 153, ' + (this.alpha * 0.6) + ')');
+                    grad.addColorStop(0.5, 'rgba(16, 185, 129, ' + (this.alpha * 0.3) + ')');
+                    grad.addColorStop(1, 'rgba(5, 150, 105, 0)');
+                    c.fillStyle = grad;
+                    c.beginPath();
+                    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    c.fill();
+                    c.restore();
+                }
+            }
+
+            function addRipple(x, y, maxR, strength) {
+                ripples.push(new WaterRipple(x, y, maxR, strength));
+                if (ripples.length > 40) ripples.shift();
+            }
+
+            function addWaterPuff(x, y, dx, dy) {
+                droplets.push(new WaterPuff(x, y, dx, dy));
+                if (droplets.length > 80) droplets.shift();
+            }
+
+            let lastX = 0, lastY = 0;
+            section.addEventListener('mousemove', (e) => {
+                const rect = section.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const now = performance.now();
+
+                const dx = x - lastX;
+                const dy = y - lastY;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist > 8 && now - lastSpawn > 60) {
+                    addRipple(x, y, 70 + Math.min(dist * 1.5, 90), 0.55);
+                    addWaterPuff(x, y, dx, dy);
+                    lastSpawn = now;
+                }
+                lastX = x;
+                lastY = y;
+            });
+
+            // When hovering or touching any project image, create prominent radiating water ripples
+            const cards = section.querySelectorAll('.fluid-flow-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', (e) => {
+                    const rect = section.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    addRipple(x, y, 160, 0.9);
+                    for (let i = 0; i < 4; i++) {
+                        addWaterPuff(x + (Math.random() - 0.5) * 30, y + (Math.random() - 0.5) * 30, 0, 0);
+                    }
+                });
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = section.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    if (Math.random() < 0.25) {
+                        addRipple(x, y, 110, 0.65);
+                        addWaterPuff(x, y, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6);
+                    }
+                });
+            });
+
+            function renderWaterLoop() {
+                if (canvas.offsetParent === null) {
+                    requestAnimationFrame(renderWaterLoop);
+                    return;
+                }
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = droplets.length - 1; i >= 0; i--) {
+                    const d = droplets[i];
+                    d.update();
+                    d.draw(ctx);
+                    if (d.alpha <= 0) droplets.splice(i, 1);
+                }
+
+                for (let i = ripples.length - 1; i >= 0; i--) {
+                    const r = ripples[i];
+                    r.update();
+                    r.draw(ctx);
+                    if (r.alpha <= 0) ripples.splice(i, 1);
+                }
+
+                requestAnimationFrame(renderWaterLoop);
+            }
+            requestAnimationFrame(renderWaterLoop);
+        }
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 4: DRAMATIC WHITE FINALE WATERCOLOR CANVAS
+    // =========================================================================
+        function initFluidContactCanvas() {
+            const canvas = document.getElementById('fluid-contact-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let width = 0;
+            let height = 0;
+            let dpr = 1;
+            let particles = [];
+            let mouse = { x: 0, y: 0, px: 0, py: 0, active: false };
+            let colorIndex = 0;
+
+            // Vibrant 14islands spectrum & watercolor thermal palette
+            const PALETTE = [
+                { r: 250, g: 204, b: 21 },   // Sunshine Yellow
+                { r: 52,  g: 211, b: 153 },  // Mint Emerald
+                { r: 56,  g: 189, b: 248 },  // Sky Cyan
+                { r: 192, g: 132, b: 252 },  // Lavender Violet
+                { r: 244, g: 114, b: 182 },  // Rose Magenta
+                { r: 251, g: 146, b: 60 }    // Warm Peach
+            ];
+
+            function resize() {
+                const rect = canvas.getBoundingClientRect();
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = rect.width;
+                height = rect.height;
+                if (width === 0 || height === 0) return;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.scale(dpr, dpr);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Particle representing a wet watercolor pigment droplet
+            class FluidPuff {
+                constructor(x, y, vx, vy, color, baseRadius) {
+                    this.x = x;
+                    this.y = y;
+                    this.vx = vx * 0.18 + (Math.random() - 0.5) * 0.6;
+                    this.vy = vy * 0.18 + (Math.random() - 0.5) * 0.6;
+                    this.color = color;
+                    this.radius = baseRadius;
+                    this.maxRadius = baseRadius * (1.5 + Math.random() * 0.6);
+                    this.alpha = 0.62;
+                    this.decay = 0.007 + Math.random() * 0.005; // evaporates gracefully in ~2-2.5s
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vx *= 0.95;
+                    this.vy *= 0.95;
+                    if (this.radius < this.maxRadius) {
+                        this.radius += (this.maxRadius - this.radius) * 0.045;
+                    }
+                    this.alpha -= this.decay;
+                }
+                draw(c) {
+                    if (this.alpha <= 0) return;
+                    c.save();
+                    c.globalCompositeOperation = 'screen';
+                    const grad = c.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                    const { r, g, b } = this.color;
+                    grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.alpha * 0.85})`);
+                    grad.addColorStop(0.55, `rgba(${r}, ${g}, ${b}, ${this.alpha * 0.45})`);
+                    grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+                    c.fillStyle = grad;
+                    c.beginPath();
+                    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    c.fill();
+                    c.restore();
+                }
+            }
+
+            function spawnPuffs(x0, y0, x1, y1) {
+                const dx = x1 - x0;
+                const dy = y1 - y0;
+                const dist = Math.hypot(dx, dy);
+                const steps = Math.max(1, Math.min(Math.floor(dist / 8), 18));
+                const col = PALETTE[colorIndex % PALETTE.length];
+                colorIndex = (colorIndex + 1) % PALETTE.length;
+
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    const px = x0 + dx * t;
+                    const py = y0 + dy * t;
+                    const r = 24 + Math.random() * 22;
+                    particles.push(new FluidPuff(px, py, dx * 0.08, dy * 0.08, col, r));
+                }
+                if (particles.length > 360) {
+                    particles.splice(0, particles.length - 360);
+                }
+            }
+
+            function onPointerMove(clientX, clientY) {
+                const rect = canvas.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+
+                if (!mouse.active) {
+                    mouse.px = x;
+                    mouse.py = y;
+                    mouse.active = true;
+                }
+                spawnPuffs(mouse.px, mouse.py, x, y);
+                mouse.px = x;
+                mouse.py = y;
+            }
+
+            // Listen on the contact stage container so sweeps register across text overlays
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.addEventListener('mousemove', (e) => onPointerMove(e.clientX, e.clientY));
+                contactSection.addEventListener('mouseleave', () => { mouse.active = false; });
+                contactSection.addEventListener('touchmove', (e) => {
+                    if (e.touches && e.touches[0]) {
+                        onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+                    }
+                }, { passive: true });
+                contactSection.addEventListener('touchend', () => { mouse.active = false; });
+            }
+
+            // Initial welcoming fluid bloom on launch
+            function triggerWelcomeStroke() {
+                if (width === 0 || height === 0) return;
+                const cy = height * 0.48;
+                for (let i = 0; i < 9; i++) {
+                    const x = width * (0.15 + (i / 9) * 0.7);
+                    const y = cy + Math.sin(i * 0.8) * 45;
+                    const col = PALETTE[i % PALETTE.length];
+                    particles.push(new FluidPuff(x, y, (Math.random() - 0.5) * 1.5, (Math.random() - 0.5) * 1.5, col, 36 + Math.random() * 26));
+                }
+            }
+            setTimeout(triggerWelcomeStroke, 400);
+
+            // 60FPS RAF animation loop
+            function loop() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.update();
+                    p.draw(ctx);
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                    }
+                }
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+        }
+
+        // ==========================================
+        // Lusion Dynamic Ambient Pointer Light Tracker (Normal OS Cursor Preserved)
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 5: SPECULAR POINTER LIGHTING
+    // =========================================================================
+        function initSpecularLighting() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            const light = document.getElementById('dynamic-pointer-light');
+            if (!light) return;
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let lightX = mouseX;
+            let lightY = mouseY;
+            let isVisible = false;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if (!isVisible) {
+                    isVisible = true;
+                    light.style.opacity = '1';
+                }
+            });
+
+            document.addEventListener('mouseleave', () => {
+                isVisible = false;
+                light.style.opacity = '0';
+            });
+
+            function renderLight() {
+                lightX += (mouseX - lightX) * 0.08;
+                lightY += (mouseY - lightY) * 0.08;
+                light.style.transform = `translate3d(${lightX.toFixed(1)}px, ${lightY.toFixed(1)}px, 0px) translate(-50%, -50%)`;
+                requestAnimationFrame(renderLight);
+            }
+            requestAnimationFrame(renderLight);
+        }
+
+        // ==========================================
+        // Kinetic Magnetic Button Attraction (F = -k * dx)
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 6: MAGNETIC BUTTON KINETICS
+    // =========================================================================
+        function initMagneticButtons() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
+            const targets = document.querySelectorAll('.hero-glass-pill, .magnetic-btn, #orbit-btn-prev, #orbit-btn-next');
+            targets.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const deltaX = (e.clientX - centerX) * 0.32;
+                    const deltaY = (e.clientY - centerY) * 0.32;
+                    btn.style.transform = `translate3d(${deltaX.toFixed(1)}px, ${deltaY.toFixed(1)}px, 0px)`;
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate3d(0px, 0px, 0px)';
+                });
+            });
+        }
+
+        // ==========================================
+        // Real-Time CFD Streamline Potential Flow Simulation over Hero
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 7: 3D CARD PERSPECTIVE TILT PHYSICS
+    // =========================================================================
+        function init3DCardTiltPhysics() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
+            const cards = document.querySelectorAll('.glass-card, .more-work-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -6.5;
+                    const rotateY = ((x - centerX) / centerX) * 6.5;
+
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-5px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                });
+            });
+        }
+
+        // Dynamic Scrollspy via IntersectionObserver
+        
+        // ==========================================
+        // 14islands Liquid Fluid Flow Distortion Engine (Neko Health Inspired)
+
+
+    // =========================================================================
+    // RESTORED SIGNATURE EXPERIENCE 8: 14ISLANDS ORGANIC FLUID FLOW REFRACTION
+    // =========================================================================
+        function init14islandsFluidFlow() {
+            const cards = document.querySelectorAll('.fluid-flow-card');
+            if (!cards.length) return;
+
+            const fluidStates = [
+                { id: 1, turb: document.getElementById('fluid-turb-1'), disp: document.getElementById('fluid-disp-1'), currentScale: 0, targetScale: 0, baseFreqX: 0.014, baseFreqY: 0.022, time: 0, speed: 0, lastX: 0, lastY: 0 },
+                { id: 2, turb: document.getElementById('fluid-turb-2'), disp: document.getElementById('fluid-disp-2'), currentScale: 0, targetScale: 0, baseFreqX: 0.016, baseFreqY: 0.024, time: 1.5, speed: 0, lastX: 0, lastY: 0 },
+                { id: 3, turb: document.getElementById('fluid-turb-3'), disp: document.getElementById('fluid-disp-3'), currentScale: 0, targetScale: 0, baseFreqX: 0.015, baseFreqY: 0.020, time: 3.0, speed: 0, lastX: 0, lastY: 0 }
+            ];
+
+            cards.forEach(card => {
+                const cardId = parseInt(card.getAttribute('data-fluid-id'), 10);
+                const state = fluidStates.find(s => s.id === cardId);
+                if (!state || !state.turb || !state.disp) return;
+
+                card.addEventListener('mouseenter', (e) => {
+                    state.targetScale = 36;
+                    state.lastX = e.clientX;
+                    state.lastY = e.clientY;
+                });
+
+                card.addEventListener('mousemove', (e) => {
+                    const dx = e.clientX - state.lastX;
+                    const dy = e.clientY - state.lastY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    state.speed = Math.min(dist * 0.35, 18);
+                    state.lastX = e.clientX;
+                    state.lastY = e.clientY;
+                    state.targetScale = 36 + state.speed;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    state.targetScale = 0;
+                    state.speed = 0;
+                });
+            });
+
+            function renderFluidLoop() {
+                fluidStates.forEach(state => {
+                    if (!state.turb || !state.disp) return;
+
+                    // Smooth spring lerp towards target scale
+                    state.currentScale += (state.targetScale - state.currentScale) * 0.12;
+
+                    // When active (hovered or decaying)
+                    if (state.currentScale > 0.05) {
+                        state.time += 0.035 + (state.speed * 0.005);
+                        state.speed *= 0.9; // decay mouse impulse
+
+                        // Dynamic harmonic oscillation of wave frequency
+                        const fX = state.baseFreqX + Math.sin(state.time * 2.2) * 0.0045;
+                        const fY = state.baseFreqY + Math.cos(state.time * 1.8) * 0.0055;
+
+                        state.turb.setAttribute('baseFrequency', `${fX.toFixed(4)} ${fY.toFixed(4)}`);
+                        state.disp.setAttribute('scale', state.currentScale.toFixed(2));
+                    } else if (state.currentScale <= 0.05 && state.currentScale > 0) {
+                        state.currentScale = 0;
+                        state.disp.setAttribute('scale', '0');
+                    }
+                });
+
+                requestAnimationFrame(renderFluidLoop);
+            }
+
+            requestAnimationFrame(renderFluidLoop);
+        }
+
+        
+        
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
         initModalDialog();
         initNavigation();
 
@@ -1013,6 +1948,15 @@
             });
         });
 
+        // Initialize restored signature interactive modules
+        initLusionPreloader();
+        initOrbitCarousel();
+        initMoreWorkWaterRipple();
+        initFluidContactCanvas();
+        initSpecularLighting();
+        initMagneticButtons();
+        init3DCardTiltPhysics();
+        init14islandsFluidFlow();
         initHeroCfdCanvas();
     });
 
@@ -1023,5 +1967,10 @@
     window.toggleHeroTheme = toggleHeroTheme;
     window.toggleFaq = toggleFaq;
     window.CASE_STUDIES = CASE_STUDIES;
+    window.rotateOrbitTo = rotateOrbitTo;
+    window.nextOrbitCard = nextOrbitCard;
+    window.prevOrbitCard = prevOrbitCard;
+    window.handleCardClick = handleCardClick;
+    window.dismissPreloader = window.dismissPreloader || dismissPreloader;
 
 })();

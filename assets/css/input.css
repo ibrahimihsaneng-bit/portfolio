@@ -335,3 +335,527 @@ body.white-view-theme header {
         animation: none !important;
     }
 }
+
+
+/* ==========================================================================
+   RESTORED HIGH-FIDELITY SIGNATURE KINETICS & 3D COMPONENTS
+   ========================================================================== */
+
+@keyframes star-pulse {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.06); }
+        }
+
+@keyframes marquee-scroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+@keyframes stagger-item {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+@keyframes cfd-flow-anim {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -120; }
+        }
+
+@keyframes cad-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+@keyframes mep-draw-path {
+            0% { stroke-dashoffset: 600; }
+            45% { stroke-dashoffset: 0; }
+            85% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -600; }
+        }
+
+@keyframes anim-float {
+            0%, 100% { transform: translateY(0px) rotate(25deg); }
+            50% { transform: translateY(-12px) rotate(28deg); }
+        }
+
+@keyframes preloaderCurtainDismiss {
+            0%, 70% {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            88% {
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+            }
+            100% {
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                visibility: hidden;
+            }
+        }
+
+
+/* Neon Stars Kinetic Pulse */
+.neon-star {
+    animation: star-pulse 4.5s ease-in-out infinite;
+}
+.neon-star-delayed {
+    animation: star-pulse 5.5s ease-in-out infinite 2.2s;
+}
+
+/* Apple-Glow & Light-Leak Shelf */
+.apple-luminous-shelf {
+    position: relative;
+}
+.apple-luminous-shelf::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 8%;
+    right: 8%;
+    height: 40px;
+    background: radial-gradient(ellipse at center, rgba(69, 190, 201, 0.45) 0%, rgba(245, 158, 70, 0.25) 45%, transparent 75%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+}
+.apple-glow-text {
+    background: linear-gradient(135deg, #FFFFFF 20%, #A4AAB5 60%, #F59E46 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.apple-glow-cyan {
+    background: linear-gradient(135deg, #FFFFFF 25%, #53BBC8 75%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Flow line animations in SVG radar */
+.flow-line-1, .flow-line-5 { animation: cfd-flow-anim 3s linear infinite; }
+.flow-line-2, .flow-line-4 { animation: cfd-flow-anim 2s linear infinite; }
+.flow-line-3 { animation: cfd-flow-anim 2.5s linear infinite; }
+
+.cad-spin-slow {
+    transform-origin: 500px 275px;
+    animation: cad-spin 40s linear infinite;
+}
+.cad-spin-rev {
+    transform-origin: 500px 275px;
+    animation: cad-spin 28s linear infinite reverse;
+}
+
+
+/* ==========================================================================
+   RESTORED SIGNATURE VISUAL EFFECTS & COMPONENT CSS
+   ========================================================================== */
+
+/* 3D Floating Academic Service Cards */
+        .service-stage {
+            perspective: 1400px;
+        }
+        .service-card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+            will-change: transform, box-shadow;
+        }
+        @media (min-width: 1024px) {
+            .service-card-1 { transform: rotate(-1.5deg) translateY(4px); }
+            .service-card-2 { transform: rotate(1deg) translateY(-4px); }
+            .service-card-3 { transform: rotate(-1deg) translateY(3px); }
+            .service-card-4 { transform: rotate(1.5deg) translateY(-3px); }
+
+            .service-card-1:hover,
+            .service-card-2:hover,
+            .service-card-3:hover,
+            .service-card-4:hover {
+                transform: rotate(0deg) translateY(-8px) scale(1.02) !important;
+                z-index: 30;
+            }
+        }
+        @keyframes star-pulse {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.06); }
+        }
+        .neon-star {
+            animation: star-pulse 4.5s ease-in-out infinite;
+        }
+        .neon-star-delayed {
+            animation: star-pulse 5.5s ease-in-out infinite 2.2s;
+        }
+        /* Infinite Marquee Ticker (Image 1 UX) */
+        .marquee-container {
+            overflow: hidden;
+            user-select: none;
+            mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
+        }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee-scroll 34s linear infinite;
+        }
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Apple Luminous Neon Under-Glow & Light-Leak Shelf (Image 4 UX) */
+        .apple-luminous-shelf {
+            position: relative;
+        }
+        .apple-luminous-shelf::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 8%;
+            right: 8%;
+            height: 40px;
+            background: radial-gradient(ellipse at center, rgba(69, 190, 201, 0.45) 0%, rgba(245, 158, 70, 0.25) 45%, transparent 75%);
+            filter: blur(20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .apple-glow-text {
+            background: linear-gradient(135deg, #FFFFFF 20%, #A4AAB5 60%, #F59E46 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .apple-glow-cyan {
+            background: linear-gradient(135deg, #FFFFFF 25%, #53BBC8 75%, #10B981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        
+
+/* 3D Circular Orbit Carousel Stage (Rotary 360 System) */
+        .orbit-stage-container {
+            perspective: 1400px;
+            perspective-origin: 50% 45%;
+            position: relative;
+            user-select: none;
+            touch-action: pan-y;
+            overflow: hidden !important;
+            max-width: 100vw !important;
+        }
+        /* Colour-Reactive Focus Carousel (Exat & Neko Health Inspired) */
+        .orbit-track {
+            position: relative;
+            width: 100%;
+            height: 680px;
+            transform-style: preserve-3d;
+        }
+        @media (max-width: 640px) {
+            .orbit-track {
+                height: 580px;
+            }
+        }
+        .orbit-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 460px;
+            max-width: 90vw;
+            margin-left: -230px;
+            margin-top: -310px;
+            transform-origin: center center;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                        box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.4s ease,
+                        background-color 0.4s ease;
+            will-change: transform, opacity, box-shadow;
+            cursor: pointer;
+            border-radius: 34px;
+            overflow: hidden;
+            background-color: #080A0E !important;
+        }
+        @media (max-width: 640px) {
+            .orbit-card {
+                width: min(320px, calc(100vw - 32px));
+                margin-left: calc(min(320px, calc(100vw - 32px)) / -2);
+                margin-top: -250px;
+                border-radius: 26px;
+            }
+        }
+        
+        /* Non-Active Cards: Compact Preview showing ONLY Title & Badge, NO overlapping text clutter */
+        .orbit-card:not(.is-active) {
+            cursor: pointer;
+        }
+        .orbit-card:not(.is-active) .orbit-details-wrapper {
+            max-height: 0 !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            transform: translateY(14px) !important;
+            pointer-events: none !important;
+            transition: max-height 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
+        }
+        .orbit-card:not(.is-active) .orbit-action-footer {
+            max-height: 0 !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            padding-top: 0 !important;
+            border-top: none !important;
+            pointer-events: none !important;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+
+        /* Center Focused Card: Full Staggered Inspection on Solid Dark Surface */
+        .orbit-card.is-active {
+            cursor: default;
+            background-color: #080A0E !important;
+        }
+        .orbit-card.is-active .orbit-details-wrapper {
+            max-height: 520px !important;
+            opacity: 1 !important;
+            overflow: visible !important;
+            transform: translateY(0) !important;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.4s ease 0.1s, 
+                        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+        }
+        .orbit-card.is-active .orbit-action-footer {
+            max-height: 80px !important;
+            opacity: 1 !important;
+            transition: max-height 0.4s ease 0.2s, opacity 0.4s ease 0.25s;
+        }
+
+        /* Quick Stagger on Discipline Details */
+        .orbit-card.is-active .orbit-details-wrapper li {
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: stagger-item 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .orbit-card.is-active .orbit-details-wrapper li:nth-child(1) { animation-delay: 80ms; }
+        .orbit-card.is-active .orbit-details-wrapper li:nth-child(2) { animation-delay: 130ms; }
+        .orbit-card.is-active .orbit-details-wrapper li:nth-child(3) { animation-delay: 180ms; }
+        .orbit-card.is-active .orbit-details-wrapper li:nth-child(4) { animation-delay: 230ms; }
+        .orbit-card.is-active .orbit-details-wrapper li:nth-child(5) { animation-delay: 280ms; }
+        .orbit-card.is-active .orbit-details-wrapper li:nth-child(6) { animation-delay: 330ms; }
+
+        @keyframes stagger-item {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .orbit-card:hover {
+            border-color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .orbit-indicator-pill {
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .orbit-indicator-pill.active {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(245, 158, 70, 0.6);
+            color: #FFFFFF;
+            box-shadow: 0 0 16px rgba(245, 158, 70, 0.25);
+            font-weight: 700;
+        }
+
+        /* Discipline-Specific Background Animations */
+        @keyframes cfd-flow-anim {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -120; }
+        }
+        .flow-line-1, .flow-line-5 { animation: cfd-flow-anim 3s linear infinite; }
+        .flow-line-2, .flow-line-4 { animation: cfd-flow-anim 2s linear infinite; }
+        .flow-line-3 { animation: cfd-flow-anim 2.5s linear infinite; }
+
+        @keyframes cad-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .cad-spin-slow { transform-origin: 500px 275px; animation: cad-spin 32s linear infinite; }
+        .cad-spin-rev { transform-origin: 500px 275px; animation: cad-spin 22s linear infinite reverse; }
+
+        @keyframes mep-draw-path {
+            0% { stroke-dashoffset: 600; }
+            45% { stroke-dashoffset: 0; }
+            85% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -600; }
+        }
+        .mep-route-1 { animation: mep-draw-path 7s ease-in-out infinite; }
+        .mep-route-2 { animation: mep-draw-path 8s ease-in-out infinite 1s; }
+        .mep-route-3 { animation: mep-draw-path 9s ease-in-out infinite 2s; }
+
+        @keyframes anim-float {
+            0%, 100% { transform: translateY(0px) rotate(25deg); }
+            50% { transform: translateY(-12px) rotate(28deg); }
+        }
+        .anim-float-1 { animation: anim-float 4s ease-in-out infinite; }
+        .anim-float-2 { animation: anim-float 4.5s ease-in-out infinite 1.5s; }
+
+        /* Editorial FAQ Accordion (Image 2 UX) */
+        .faq-item {
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+        .faq-item.active {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(245, 158, 70, 0.45);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, padding 0.35s ease;
+            opacity: 0;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 320px;
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        .faq-icon {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: #F59E46;
+        }
+
+        /* High-Contrast Official Credential Pass Badge (Dark Golden Edition) */
+        .credential-pass {
+            background: linear-gradient(145deg, #C98E1C 0%, #A97109 25%, #7D5103 60%, #523401 90%, #8E5E0B 100%);
+            color: #1A1303;
+            position: relative;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px rgba(184, 134, 11, 0.45);
+            border-radius: 28px;
+            border: 1px solid rgba(230, 175, 45, 0.55);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .credential-pass::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 85% 15%, rgba(255, 215, 0, 0.2), transparent 55%),
+                        linear-gradient(180deg, rgba(255, 215, 0, 0.1) 0%, transparent 40%, rgba(0, 0, 0, 0.32) 100%);
+            pointer-events: none;
+        }
+        .credential-pass:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.85), 0 0 45px rgba(217, 155, 38, 0.6);
+        }
+        .lanyard-cutout {
+            width: 48px;
+            height: 7px;
+            background: #0A0B0E;
+            border-radius: 9999px;
+            margin: 0 auto;
+        }
+
+        
+
+/* 14islands Fluid Watercolor Canvas & Editorial Stage */
+        #fluid-contact-canvas {
+            touch-action: none;
+            background-color: #FFFFFF;
+        }
+        .fluid-canvas-container {
+            background-color: #FFFFFF;
+            position: relative;
+        }
+        .more-work-card {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+        }
+        .more-work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.12);
+        }
+
+        
+
+/* Lusion Dynamic Specular Pointer Light Tracker */
+        #dynamic-pointer-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 700px;
+            height: 700px;
+            margin-left: -350px;
+            margin-top: -350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 70, 0.055) 0%, rgba(6, 182, 212, 0.025) 35%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            will-change: transform;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Cinematic Film Grain Noise Texture */
+        .cinematic-noise-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 95;
+            opacity: 0.032;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        /* Magnetic Button Spring Smoothing */
+        .magnetic-btn {
+            display: inline-block;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+            will-change: transform;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .service-card-3d, .neon-star, .neon-star-delayed, .skill-card-fan {
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+            }
+            .marquee-track {
+                animation: none !important;
+            }
+        }
+    
+        /* Preloader Automatic Fail-Safe Curtain Dismissal (Ensures 100% Guaranteed Opening) */
+        @keyframes preloaderCurtainDismiss {
+            0%, 70% {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            88% {
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+            }
+            100% {
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                visibility: hidden;
+            }
+        }
+        #lusion-preloader {
+            animation: preloaderCurtainDismiss 2.2s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+        }
+
+    
+        
+
