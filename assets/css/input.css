@@ -859,3 +859,102 @@ body.white-view-theme header {
     
         
 
+
+
+/* ==========================================================================
+   INTERACTIVE 3D ENGINEERING LAB & WORKFLOW TIMELINE EXTENSIONS
+   ========================================================================== */
+
+/* 3D Model Viewer Spatial Viewport */
+model-viewer {
+    width: 100%;
+    height: 480px;
+    background: radial-gradient(circle at center, #0B0E14 0%, #05070A 100%);
+    border-radius: 24px;
+    outline: none;
+    --poster-color: transparent;
+}
+
+@media (max-width: 640px) {
+    model-viewer {
+        height: 360px;
+        border-radius: 18px;
+    }
+}
+
+/* 3D Hotspot Inspection Pins */
+.model-hotspot {
+    background: rgba(8, 10, 14, 0.92);
+    border: 1px solid rgba(245, 158, 70, 0.7);
+    border-radius: 9999px;
+    padding: 5px 12px;
+    color: #F5F7FB;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px rgba(245, 158, 70, 0.35);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, border-color 0.2s;
+    user-select: none;
+    pointer-events: auto;
+}
+.model-hotspot:hover {
+    transform: scale(1.08);
+    background: #F59E46;
+    color: #080A0D;
+    border-color: #FFFFFF;
+    box-shadow: 0 0 20px rgba(245, 158, 70, 0.8);
+}
+.model-hotspot-pin {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #F59E46;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 8px #F59E46;
+    display: inline-block;
+    margin-right: 6px;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* 5-Stage Engineering Workflow Timeline */
+.workflow-timeline-track {
+    position: relative;
+}
+.workflow-timeline-line {
+    position: absolute;
+    top: 24px;
+    bottom: 24px;
+    left: 20px;
+    width: 2px;
+    background: linear-gradient(180deg, #F59E46 0%, #06B6D4 50%, #10B981 100%);
+    opacity: 0.35;
+}
+@media (min-width: 1024px) {
+    .workflow-timeline-line-h {
+        position: absolute;
+        top: 24px;
+        left: 32px;
+        right: 32px;
+        height: 2px;
+        background: linear-gradient(90deg, #F59E46 0%, #06B6D4 50%, #10B981 100%);
+        opacity: 0.35;
+    }
+}
+
+.workflow-card {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.workflow-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245, 158, 70, 0.45);
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(245, 158, 70, 0.15);
+}
+
+/* Hero Engineering Cinema HUD */
+.hero-cinema-hud {
+    background-image: 
+        linear-gradient(rgba(245, 158, 70, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+}

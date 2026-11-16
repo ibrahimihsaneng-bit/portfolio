@@ -1925,6 +1925,125 @@
 
 
 
+
+    // =========================================================================
+    // NEW PREMIUM EXPERIENCE 1: INTERACTIVE 3D ENGINEERING LAB CONTROLLER
+    // =========================================================================
+    const LAB_MODELS = {
+        knuckle: {
+            src: 'assets/models/suspension_knuckle.glb',
+            title: 'Formula Student Lightweight Suspension Upright / Knuckle',
+            discipline: 'Al 7075-T6 • FEA Topology Optimization & Modal Dynamics',
+            cameraOrbit: '45deg 75deg 1.8m',
+            fieldOfView: '30deg',
+            hotspots: [
+                { slot: 'hotspot-caliper', dataPosition: '0.08m 0.05m 0.02m', text: 'Brake Caliper Lug: 218 MPa (FoS 2.31 PASS)' },
+                { slot: 'hotspot-bearing', dataPosition: '0m 0m 0m', text: 'Bearing Bore: ISO H7 (+0.025 mm)' },
+                { slot: 'hotspot-arm', dataPosition: '-0.07m 0.06m -0.01m', text: 'Steering Arm: 84.2 Hz Mode 1 Frequency' }
+            ]
+        },
+        nozzle: {
+            src: 'assets/models/supersonic_nozzle.glb',
+            title: '20-Bar Convergent-Divergent Supersonic Nozzle',
+            discipline: 'Inconel 718 • Compressible CFD & Shock Diamonds (Mach 1.002)',
+            cameraOrbit: '90deg 90deg 0.35m',
+            fieldOfView: '28deg',
+            hotspots: [
+                { slot: 'hotspot-inlet', dataPosition: '0m 0m -0.06m', text: 'Inlet: 20 Bar (2.0 MPa) Stagnation P0' },
+                { slot: 'hotspot-throat', dataPosition: '0m 0.018m 0m', text: 'Sonic Throat: Mach 1.000 Choked' },
+                { slot: 'hotspot-exit', dataPosition: '0m 0m 0.065m', text: 'Supersonic Exit: Mach 2.2 Shock Train' }
+            ]
+        }
+    };
+
+    let currentLabModelKey = 'knuckle';
+
+    function switchLabModel(key) {
+        const viewer = document.getElementById('engineering-model-viewer');
+        const titleEl = document.getElementById('lab-model-title');
+        const discEl = document.getElementById('lab-model-discipline');
+        const btnKnuckle = document.getElementById('lab-btn-knuckle');
+        const btnNozzle = document.getElementById('lab-btn-nozzle');
+        if (!viewer || !LAB_MODELS[key]) return;
+
+        currentLabModelKey = key;
+        const data = LAB_MODELS[key];
+        viewer.src = data.src;
+        viewer.cameraOrbit = data.cameraOrbit;
+        viewer.fieldOfView = data.fieldOfView;
+
+        if (titleEl) titleEl.textContent = data.title;
+        if (discEl) discEl.textContent = data.discipline;
+
+        if (btnKnuckle && btnNozzle) {
+            if (key === 'knuckle') {
+                btnKnuckle.className = 'px-4 py-2 rounded-xl bg-[#F59E46] text-[#080A0D] font-mono text-xs font-bold transition-all shadow-md';
+                btnNozzle.className = 'px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10 font-mono text-xs font-semibold transition-all';
+            } else {
+                btnNozzle.className = 'px-4 py-2 rounded-xl bg-[#06B6D4] text-[#080A0D] font-mono text-xs font-bold transition-all shadow-md';
+                btnKnuckle.className = 'px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10 font-mono text-xs font-semibold transition-all';
+            }
+        }
+    }
+
+    function toggleLabAutoRotate() {
+        const viewer = document.getElementById('engineering-model-viewer');
+        const btn = document.getElementById('lab-btn-rotate');
+        if (!viewer) return;
+        viewer.autoRotate = !viewer.autoRotate;
+        if (btn) {
+            btn.textContent = viewer.autoRotate ? '⏸ PAUSE ROTATION' : '▶ AUTO-ROTATE';
+        }
+    }
+
+    function resetLabView() {
+        const viewer = document.getElementById('engineering-model-viewer');
+        if (!viewer) return;
+        const data = LAB_MODELS[currentLabModelKey];
+        if (data) {
+            viewer.cameraOrbit = data.cameraOrbit;
+            viewer.fieldOfView = data.fieldOfView;
+        }
+    }
+
+    // =========================================================================
+    // NEW PREMIUM EXPERIENCE 2: HERO VIDEO CONTROLLER
+    // =========================================================================
+    function toggleHeroVideoPlayback() {
+        const vid = document.getElementById('hero-cinema-video');
+        const icon = document.getElementById('hero-video-toggle-icon');
+        const text = document.getElementById('hero-video-toggle-text');
+        if (!vid) return;
+        if (vid.paused) {
+            vid.play().catch(() => {});
+            if (icon) icon.textContent = '⏸';
+            if (text) text.textContent = 'PAUSE';
+        } else {
+            vid.pause();
+            if (icon) icon.textContent = '▶';
+            if (text) text.textContent = 'PLAY';
+        }
+    }
+
+    // =========================================================================
+    // NEW PREMIUM EXPERIENCE 3: WORKFLOW TIMELINE SCROLL OBSERVER
+    // =========================================================================
+    function initWorkflowObserver() {
+        const steps = document.querySelectorAll('.workflow-step-node');
+        if (!steps.length || !('IntersectionObserver' in window)) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'scale-100');
+                    entry.target.classList.remove('opacity-50', 'scale-95');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        steps.forEach(s => observer.observe(s));
+    }
+
 document.addEventListener('DOMContentLoaded', () => {
         initModalDialog();
         initNavigation();
@@ -1958,6 +2077,7 @@ document.addEventListener('DOMContentLoaded', () => {
         init3DCardTiltPhysics();
         init14islandsFluidFlow();
         initHeroCfdCanvas();
+        initWorkflowObserver();
     });
 
     // Expose needed APIs to window
@@ -1972,5 +2092,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.prevOrbitCard = prevOrbitCard;
     window.handleCardClick = handleCardClick;
     window.dismissPreloader = window.dismissPreloader || dismissPreloader;
+    window.switchLabModel = switchLabModel;
+    window.toggleLabAutoRotate = toggleLabAutoRotate;
+    window.resetLabView = resetLabView;
+    window.toggleHeroVideoPlayback = toggleHeroVideoPlayback;
 
 })();
