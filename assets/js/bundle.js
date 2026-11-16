@@ -622,17 +622,23 @@
 
         handleUrlHash();
         window.addEventListener('hashchange', handleUrlHash);
+        window.addEventListener('popstate', handleUrlHash);
     }
 
     function handleUrlHash() {
         const hash = window.location.hash;
         const match = hash.match(/^#(?:case-study|project)-([a-z0-9_]+)$/i);
+        const modal = document.getElementById('tech-modal');
         if (match && match[1]) {
             const projectId = match[1].toLowerCase();
             if (CASE_STUDIES[projectId]) {
                 setTimeout(() => {
                     openCaseStudy(projectId, null, false);
-                }, 100);
+                }, 50);
+            }
+        } else {
+            if (modal && !modal.classList.contains('hidden')) {
+                closeModal();
             }
         }
     }
@@ -646,7 +652,7 @@
         activeTriggerElement = triggerBtn || document.activeElement;
 
         if (updateHash) {
-            history.replaceState(null, '', `#case-study-${projectId}`);
+            history.pushState({ modalOpen: true, projectId: projectId }, '', `#case-study-${projectId}`);
         }
 
         document.getElementById('cm-title').textContent = data.title;
@@ -1958,6 +1964,68 @@
 
     let currentLabModelKey = 'knuckle';
 
+    let currentLabMode = 'solid';
+
+    function setLabInspectionMode(mode) {
+        currentLabMode = mode;
+        const btnSolid = document.getElementById('lab-mode-solid');
+        const btnMesh = document.getElementById('lab-mode-mesh');
+        const btnStress = document.getElementById('lab-mode-stress');
+        const viewer = document.getElementById('engineering-model-viewer');
+        const colormapBar = document.getElementById('lab-colormap-bar');
+
+        const activeClasses = 'px-3 py-1.5 rounded-lg bg-[#F59E46] text-[#080A0D] font-bold transition-all shadow-sm';
+        const inactiveClasses = 'px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10 font-semibold transition-all';
+
+        if (btnSolid) btnSolid.className = (mode === 'solid') ? activeClasses : inactiveClasses;
+        if (btnMesh) btnMesh.className = (mode === 'mesh') ? activeClasses : inactiveClasses;
+        if (btnStress) btnStress.className = (mode === 'stress') ? activeClasses : inactiveClasses;
+
+        if (!viewer) return;
+
+        if (mode === 'mesh') {
+            viewer.exposure = 1.35;
+            viewer.shadowIntensity = 0.5;
+            if (colormapBar) {
+                colormapBar.style.opacity = '0.5';
+                const title = document.getElementById('lab-colormap-title');
+                if (title) title.textContent = 'Mesh Discretization: 184,200 Hexa/Tet Elements (Quality > 0.78)';
+            }
+        } else if (mode === 'stress') {
+            viewer.exposure = 1.15;
+            viewer.shadowIntensity = 1.2;
+            if (colormapBar) {
+                colormapBar.style.opacity = '1.0';
+                updateLabColormap();
+            }
+        } else {
+            viewer.exposure = 1.0;
+            viewer.shadowIntensity = 1.5;
+            if (colormapBar) {
+                colormapBar.style.opacity = '0.85';
+                updateLabColormap();
+            }
+        }
+    }
+
+    function setLabCameraPreset(orbit) {
+        const viewer = document.getElementById('engineering-model-viewer');
+        if (!viewer) return;
+        viewer.cameraOrbit = orbit;
+    }
+
+    function updateLabColormap() {
+        const title = document.getElementById('lab-colormap-title');
+        const range = document.getElementById('lab-colormap-range');
+        if (currentLabModelKey === 'nozzle') {
+            if (title) title.textContent = 'Supersonic Mach Number Distribution (M)';
+            if (range) range.textContent = 'Mach 0.1 (Subsonic Inlet) ─── Mach 1.0 (Throat) ─── Mach 2.4 (Supersonic Bell)';
+        } else {
+            if (title) title.textContent = 'Von Mises Stress Distribution (MPa)';
+            if (range) range.textContent = '0.0 MPa ─── 125.0 MPa ─── 250.0 MPa (Yield: 503 MPa)';
+        }
+    }
+
     function switchLabModel(key) {
         const viewer = document.getElementById('engineering-model-viewer');
         const titleEl = document.getElementById('lab-model-title');
@@ -1984,6 +2052,7 @@
                 btnKnuckle.className = 'px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/10 font-mono text-xs font-semibold transition-all';
             }
         }
+        updateLabColormap();
     }
 
     function toggleLabAutoRotate() {
@@ -2044,7 +2113,57 @@
         steps.forEach(s => observer.observe(s));
     }
 
+
+    // Scroll Progress Indicator Controller
+    function initScrollProgress() {
+        const bar = document.getElementById('scroll-progress-bar');
+        if (!bar) return;
+        const update = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+            bar.setAttribute('aria-valuenow', Math.round(progress).toString());
+        };
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+    }
+
+    // Active Section Navigation Scrollspy
+    function initNavSpy() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('#desktop-nav a.nav-item');
+        if (!sections.length || !navLinks.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href === `#${id}`) {
+                            link.classList.add('active');
+                            link.style.color = '#F59E46';
+                            link.style.fontWeight = '700';
+                        } else {
+                            link.classList.remove('active');
+                            link.style.color = '';
+                            link.style.fontWeight = '';
+                        }
+                    });
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -55% 0px',
+            threshold: 0
+        });
+
+        sections.forEach(sec => observer.observe(sec));
+    }
+
 document.addEventListener('DOMContentLoaded', () => {
+        initScrollProgress();
+        initNavSpy();
         initModalDialog();
         initNavigation();
 
@@ -2082,6 +2201,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Expose needed APIs to window
     window.openCaseStudy = openCaseStudy;
+    window.setLabInspectionMode = setLabInspectionMode;
+    window.setLabCameraPreset = setLabCameraPreset;
     window.closeModal = closeModal;
     window.switchModalTab = switchModalTab;
     window.toggleHeroTheme = toggleHeroTheme;
